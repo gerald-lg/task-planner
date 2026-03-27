@@ -1,22 +1,26 @@
 import { stateTaskLabels } from "../models";
 
 interface TaskCardProps {
+    id: string;
     title: string;
     duration?: number;
     note?: string;
     state?: keyof typeof stateTaskLabels;
-
+    onChange: (value: string, id: string) => void;
+    onSubmit: () => void;
 }
 
-export const TaskCard = ({ title, duration, note, state }: TaskCardProps) => {
+export const TaskCard = ({ id, title, duration, note, state, onChange, onSubmit }: TaskCardProps) => {
   return (
-    <section>
+    <form onSubmit={onSubmit}>
         <div className="text-white">
           <input
+            name="title"
             type="text"
             placeholder="Enter title..."
-            className="text-xl font-bold text-white w-full placeholder:text-gray-100 focus:outline-none bg-transparent text-ellipsis whitespace-nowrap overflow-hidden"
+            className="text-md font-semibold text-white w-full placeholder:text-gray-100 focus:outline-none bg-transparent text-ellipsis whitespace-nowrap overflow-hidden"
             value={title}
+            onChange={(e) => onChange(e.target.value, id)}
           />
           { note && <p className="text-xs text-white text-ellipsis whitespace-nowrap overflow-hidden">{note}</p>}
           <section className="flex flex-row items-center justify-end gap-2">
@@ -24,6 +28,6 @@ export const TaskCard = ({ title, duration, note, state }: TaskCardProps) => {
             {duration && <p className="text-xs text-white">({duration} mins)</p>}
           </section>
         </div>
-    </section>
+    </form>
   )
 }
