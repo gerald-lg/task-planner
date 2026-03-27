@@ -24,3 +24,9 @@ export interface PlannedTask {
   note?: string;
   state: StateTask;
 }
+
+export const stateTaskLabels: Record<StateTask, string> = {
+  "todo": "Todo",
+  "in-progress": "In progress",
+  "done": "Done",
+};
