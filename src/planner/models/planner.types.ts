@@ -14,6 +14,7 @@ export interface TaskTemplate {
   title: string;
   color?: string;
   duration?: number;
+  isDraft: boolean;
 }
 
 export interface PlannedTask {
