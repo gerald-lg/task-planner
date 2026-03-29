@@ -6,6 +6,7 @@ export interface ListTasksTemplate {
     name: string;
     color?: "blue" | "green" | "red" | "yellow" | "transparent" | "sky";
     handleAddTask: () => void;
+    handleMouseDown: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const colorClasses = {
@@ -35,7 +36,7 @@ const colorClasses = {
     }
 } as const;
 
-export const ListTask = ({ children, counter, name, color, handleAddTask }: ListTasksTemplate) => {
+export const ListTask = ({ children, counter, name, color, handleAddTask, handleMouseDown }: ListTasksTemplate) => {
     const sectionColorClass = color ? colorClasses[color].section : "";
     const badgeColorClass = color ? colorClasses[color].badge : "";
 
@@ -52,7 +53,7 @@ export const ListTask = ({ children, counter, name, color, handleAddTask }: List
                     <h3 className={`p-1 rounded ${badgeColorClass} text-white`}>{ name }</h3>
                     <span className="text-sm text-white">{ counter }</span>
                 </div>
-                <button onClick={handleAddTask} className="px-2 py-1 text-white">+</button>
+                <button onMouseDown={(e) => handleMouseDown(e)} onClick={handleAddTask} className="px-2 py-1 text-white">+</button>
             </div>
             <section className={`flex flex-col gap-3 p-2` }>
                 {childrenWithColor}
