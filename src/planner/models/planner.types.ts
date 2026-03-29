@@ -1,3 +1,5 @@
+import { colorClasses } from "../helpers";
+
 export type Day =
   | "monday"
   | "tuesday"
@@ -12,7 +14,7 @@ export type StateTask = "todo" | "in-progress" | "done";
 export interface TaskTemplate {
   id: string;
   title: string;
-  color?: string;
+  color?: ColorType;
   duration?: number;
   isDraft: boolean;
 }
@@ -31,3 +33,7 @@ export const stateTaskLabels: Record<StateTask, string> = {
   "in-progress": "In progress",
   "done": "Done",
 };
+
+export type ColorType = keyof typeof colorClasses;
+
+export const colorTypes = Object.keys(colorClasses) as ColorType[];
