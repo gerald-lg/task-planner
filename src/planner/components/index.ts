@@ -1,2 +1,2 @@
-export * from "./ListTask";
+export * from "./PlannerColumn";
 export * from "./TaskCard";
