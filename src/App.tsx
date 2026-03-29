@@ -71,7 +71,8 @@ function App() {
         handleMouseDown={focusTaskDraft}
       >
         {tasks.map((task) => (
-          <TaskCard  
+          <TaskCard
+            color="sky"
             key={task.id} 
             id={task.id} 
             title={task.title} 
@@ -79,7 +80,7 @@ function App() {
             onChange={handleChangeTask} 
             onSubmit={handleSubmitTask} 
             onBlur={handleOnBlurTask}
-            ref={(el) => { inputRefs.current[task.id] = el }}
+            refInput={(el) => { inputRefs.current[task.id] = el }}
           />
         ))}
       </ListTask>
