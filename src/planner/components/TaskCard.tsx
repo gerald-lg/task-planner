@@ -1,34 +1,45 @@
 import type { Ref, SubmitEvent } from "react";
-import { stateTaskLabels } from "../models";
+import { useDraggable } from "@dnd-kit/react";
+
+import { stateTaskLabels, type ColorType } from "../models";
+import { colorClasses } from "../helpers";
 
 interface TaskCardProps {
     id: string;
     title: string;
+    color?: ColorType;
     duration?: number;
     note?: string;
     state?: keyof typeof stateTaskLabels;
     onChange: (value: string, id: string) => void;
     onSubmit: (e: SubmitEvent<HTMLFormElement>, id: string) => void;
     onBlur: (value: string, id: string) => void;
-    ref: Ref<HTMLInputElement>
+    refInput: Ref<HTMLInputElement>
 }
 
-export const TaskCard = (
-    { id, 
-      title, 
-      duration, 
-      note, 
-      state, 
-      onChange, 
-      onSubmit,
-      onBlur,
-      ref
-    }: TaskCardProps) => {
+export const TaskCard = ({ 
+    id, 
+    title,
+    color, 
+    duration, 
+    note, 
+    state, 
+    onChange, 
+    onSubmit,
+    onBlur,
+    refInput
+  }: TaskCardProps) => {
+  
+  
+  const { ref } = useDraggable({
+    id: id,
+  });
+
   return (
-    <form onSubmit={(e) => onSubmit(e, id)}>
+    <form className={`${color ? colorClasses[color].card : ""} bg-opacity-50 p-2 rounded-md`} ref={ref} onSubmit={(e) => onSubmit(e, id)}>
         <div className="text-white">
           <input
-            ref={ref}
+            ref={refInput}
             name="title"
             type="text"
             placeholder="Enter title..."
