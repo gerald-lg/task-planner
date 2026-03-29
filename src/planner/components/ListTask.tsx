@@ -1,50 +1,21 @@
-import { Children, type ReactNode } from "react";
+import { type ReactNode } from "react";
+
+import type { ColorType } from "../models";
+import { colorClasses } from "../helpers";
+
 
 export interface ListTasksTemplate {
     children?: ReactNode;
     counter: number;
     name: string;
-    color?: "blue" | "green" | "red" | "yellow" | "transparent" | "sky";
+    color?: ColorType;
     handleAddTask: () => void;
     handleMouseDown: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const colorClasses = {
-    blue: {
-        section: "bg-blue-950",
-        badge: "bg-blue-700",
-    },
-    green: {
-        section: "bg-green-950",
-        badge: "bg-green-700",
-    },
-    red: {
-        section: "bg-red-950",
-        badge: "bg-red-700",
-    },
-    yellow: {
-        section: "bg-yellow-950",
-        badge: "bg-yellow-700",
-    },
-    transparent: {
-        section: "bg-transparent",
-        badge: "bg-transparent",
-    },
-    sky: {
-        section: "bg-sky-950",
-        badge: "bg-sky-700",
-    }
-} as const;
-
 export const ListTask = ({ children, counter, name, color, handleAddTask, handleMouseDown }: ListTasksTemplate) => {
     const sectionColorClass = color ? colorClasses[color].section : "";
     const badgeColorClass = color ? colorClasses[color].badge : "";
-
-    const childrenWithColor = Children.map(children, (child) => (
-        <div className={`${badgeColorClass} bg-opacity-50 p-2 rounded-md`}>
-            {child}
-        </div>
-    ));
 
     return (
         <section className={`flex flex-col gap-2 p-4 w-2/5 rounded-lg ${sectionColorClass}`}>
@@ -56,7 +27,7 @@ export const ListTask = ({ children, counter, name, color, handleAddTask, handle
                 <button onMouseDown={(e) => handleMouseDown(e)} onClick={handleAddTask} className="px-2 py-1 text-white">+</button>
             </div>
             <section className={`flex flex-col gap-3 p-2` }>
-                {childrenWithColor}
+                {children}
             </section>
         </section>
     )
