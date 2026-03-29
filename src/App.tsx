@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState, type SubmitEvent } from 'react'
-import './App.css'
-import { ListTask } from './planner/components/ListTask'
-import { TaskCard } from './planner/components/TaskCard'
+import { useEffect, useReducer, useRef, useState, type SubmitEvent } from 'react';
+
+import { ListTask, TaskCard } from './planner/components';
 import type { TaskTemplate } from './planner/models';
+import { templateTaskReducer } from './planner/reducers';
+
+import './App.css'
 
 const initialTasks: TaskTemplate[] = [
   { id: '1', title: 'Task 1', duration: 30, isDraft: false },
@@ -11,80 +13,44 @@ const initialTasks: TaskTemplate[] = [
   { id: '4', title: 'Task 4', duration: 15, isDraft: false },
 ];
 
-
 function App() {
 
-  const [tasks, setTasks] = useState<TaskTemplate[]>(initialTasks);
+  const [tasks, dispatch] = useReducer(templateTaskReducer, initialTasks);
   
   const [pendingFocusID, setPendingFocusID] = useState<string|null>(null);
   const inputRefs = useRef<Record<string, HTMLInputElement| null>>({});
 
   const handleAddTask = () => {
     const id = crypto.randomUUID();
-    setTasks((prev) => {
-      const newTask: TaskTemplate = {
-        id: id,
-        title: ``,
-        isDraft: true,
-      }
-      return [...prev, newTask];
-    });
-
+    dispatch({ type: 'ADD_TASK_DRAFT', payload: { id } });
     setPendingFocusID(id);
   }
 
-  const handleChangeTask = (value: string, id: string) => {
-    setTasks((prev) => {
-      const newTasks = prev.map((task) => {
-        if (task.id === id) {
-          return {
-            ...task,
-            title: value,
-          }
-        }
-        return task;
+  const focusTaskDraft = (e : React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
 
-      })
-      return newTasks;
-    });
+    const draftTask = tasks.find((task) => task.isDraft);
+    if(draftTask){
+      setPendingFocusID(draftTask.id);
+    }
+  }
+
+  const handleChangeTask = (value: string, id: string) => {
+    dispatch({ type: 'CHANGE_TASK_TITLE', payload: { id, title: value } }); 
   }
 
   const handleOnBlurTask = (value: string, id: string) => {
     if(value.trim() === ""){
-      setTasks((prev) => {
-        const tasks = prev.filter((task) => task.id != id);
-
-        return tasks;
-      })
+      dispatch({ type: 'DISCARD_TASK', payload: { id } });
     }
     else{
-      changeDraftState(id);
+      dispatch({ type: 'SAVE_TASK', payload: { id } });
     }
-
   }
 
   const handleSubmitTask = (e:SubmitEvent<HTMLFormElement>, id:string) => {
     e.preventDefault();
-    changeDraftState(id);
-  }
-
-  const changeDraftState = (id: string) => {
-
-    setTasks((prev) => {
-      const tasks = prev.map((task) => {
-        if(task.id === id){
-          return {
-            ...task,
-            isDraft: false,
-          }
-        }
-
-        return task;
-      });
-
-      return tasks;
-    })
-
+    dispatch({ type: 'SAVE_TASK', payload: { id } });
   }
 
   useEffect(() => {
@@ -97,7 +63,13 @@ function App() {
 
   return (
     <>
-      <ListTask name="To Do" counter={tasks.length} color="sky" handleAddTask={handleAddTask}>
+      <ListTask 
+        name="To Do" 
+        counter={tasks.length} 
+        color="sky" 
+        handleAddTask={handleAddTask}
+        handleMouseDown={focusTaskDraft}
+      >
         {tasks.map((task) => (
           <TaskCard  
             key={task.id} 
