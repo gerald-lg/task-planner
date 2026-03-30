@@ -1,8 +1,9 @@
-import { useEffect, useReducer, useRef, useState, type SubmitEvent } from 'react';
 
-import { ListTask, TaskCard } from './planner/components';
+import { useEffect, useRef } from 'react';
+
+import { PlannerColumn, TaskCard } from './planner/components';
 import type { TaskTemplate } from './planner/models';
-import { templateTaskReducer } from './planner/reducers';
+import { useTemplateTask } from './planner/hooks';
 
 import './App.css'
 
@@ -15,43 +16,18 @@ const initialTasks: TaskTemplate[] = [
 
 function App() {
 
-  const [tasks, dispatch] = useReducer(templateTaskReducer, initialTasks);
-  
-  const [pendingFocusID, setPendingFocusID] = useState<string|null>(null);
-  const inputRefs = useRef<Record<string, HTMLInputElement| null>>({});
+  const { 
+    tasks, 
+    pendingFocusID,
+    handleAddTask,
+    focusTaskDraft,
+    handleChangeTask,
+    handleOnBlurTask,
+    handleSubmitTask,
+    setPendingFocusID 
+  } = useTemplateTask(initialTasks);
 
-  const handleAddTask = () => {
-    const id = crypto.randomUUID();
-    dispatch({ type: 'ADD_TASK_DRAFT', payload: { id } });
-    setPendingFocusID(id);
-  }
-
-  const focusTaskDraft = (e : React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    const draftTask = tasks.find((task) => task.isDraft);
-    if(draftTask){
-      setPendingFocusID(draftTask.id);
-    }
-  }
-
-  const handleChangeTask = (value: string, id: string) => {
-    dispatch({ type: 'CHANGE_TASK_TITLE', payload: { id, title: value } }); 
-  }
-
-  const handleOnBlurTask = (value: string, id: string) => {
-    if(value.trim() === ""){
-      dispatch({ type: 'DISCARD_TASK', payload: { id } });
-    }
-    else{
-      dispatch({ type: 'SAVE_TASK', payload: { id } });
-    }
-  }
-
-  const handleSubmitTask = (e:SubmitEvent<HTMLFormElement>, id:string) => {
-    e.preventDefault();
-    dispatch({ type: 'SAVE_TASK', payload: { id } });
-  }
+  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   useEffect(() => {
     if(pendingFocusID){
@@ -59,14 +35,15 @@ function App() {
       setPendingFocusID(null);
     }
   }, [pendingFocusID])
-  
 
   return (
     <>
-      <ListTask 
+      <PlannerColumn
+        id="todo"
         name="To Do" 
         counter={tasks.length} 
         color="sky" 
+        showAddButton={true}
         handleAddTask={handleAddTask}
         handleMouseDown={focusTaskDraft}
       >
@@ -83,7 +60,7 @@ function App() {
             refInput={(el) => { inputRefs.current[task.id] = el }}
           />
         ))}
-      </ListTask>
+      </PlannerColumn>
     </>
   )
 }
