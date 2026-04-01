@@ -28,6 +28,11 @@ export interface PlannedTask {
   state: StateTask;
 }
 
+export interface PlannerState {
+  templates: TaskTemplate[];
+  plannedTasks: PlannedTask[];
+}
+
 export const stateTaskLabels: Record<StateTask, string> = {
   "todo": "Todo",
   "in-progress": "In progress",
@@ -37,3 +42,5 @@ export const stateTaskLabels: Record<StateTask, string> = {
 export type ColorType = keyof typeof colorClasses;
 
 export const colorTypes = Object.keys(colorClasses) as ColorType[];
+
+export type MomentDay = "morning" | "afternoon" | "evening" | "night";
