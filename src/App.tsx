@@ -74,9 +74,31 @@ function App() {
 
   const handleDragEnd = (taskId: string, plannerColumnId: string) => {
     if(plannerColumnId !== "todo"){
-      const newTask = createPlannedTask(taskId, plannerColumnId as Day);
-      addPlannedTask(newTask);
+      const existTask = plannedTasks.some((task) => task.id === taskId);
+      if(existTask){
+        const task = plannedTasks.find((task) => task.id === taskId) as PlannedTask;
+        if(task.day !== plannerColumnId){
+          onMoveTask(task, plannerColumnId as Day);
+        }
+      }else{
+        const newTask = createPlannedTask(taskId, plannerColumnId as Day);
+        addPlannedTask(newTask);
+      }
     }
+  }
+
+  const onMoveTask = (plannedTask: PlannedTask, new_day : Day) => {
+    setPlannedTasks((prev) => 
+      prev.map((task) => {
+        if(task.id === plannedTask.id){
+          return {
+            ...plannedTask,
+            day: new_day
+          }
+        }
+        return task;
+      })
+    )
   }
 
   const addPlannedTask = (task: PlannedTask) => {
