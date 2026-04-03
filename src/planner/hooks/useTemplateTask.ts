@@ -41,16 +41,21 @@ export const useTemplateTask = (initialState: TaskTemplate[]) => {
         dispatch({ type: 'SAVE_TASK', payload: { id } });
     }
 
+    const getTaskById = (id: string) => {
+        return tasks.find((task) => task.id === id) || null;
+    }
+
     return {
         // variables
         tasks,
         pendingFocusID,
         // handlers
-        handleAddTask,
         focusTaskDraft,
+        getTaskById,
+        handleAddTask,
         handleChangeTask,
         handleOnBlurTask,
         handleSubmitTask,
-        setPendingFocusID  
+        setPendingFocusID,
     }
 }
