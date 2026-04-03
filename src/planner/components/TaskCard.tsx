@@ -1,8 +1,8 @@
 import type { Ref, SubmitEvent } from "react";
 import { useDraggable } from "@dnd-kit/react";
 
-import { stateTaskLabels, type ColorType } from "../models";
-import { colorClasses } from "../helpers";
+import { type ColorType, type StateTask } from "../models";
+import { colorClasses, typesStates } from "../helpers";
 
 interface TaskCardProps {
     id: string;
@@ -10,11 +10,12 @@ interface TaskCardProps {
     color?: ColorType;
     duration?: number;
     note?: string;
-    state?: keyof typeof stateTaskLabels;
+    state?: StateTask;
     onChange: (value: string, id: string) => void;
     onSubmit: (e: SubmitEvent<HTMLFormElement>, id: string) => void;
     onBlur: (value: string, id: string) => void;
-    refInput: Ref<HTMLInputElement>
+    refInput: Ref<HTMLInputElement>,
+    onChangeState?: (id: string) => void;
 }
 
 export const TaskCard = ({ 
@@ -27,7 +28,8 @@ export const TaskCard = ({
     onChange, 
     onSubmit,
     onBlur,
-    refInput
+    refInput,
+    onChangeState
   }: TaskCardProps) => {
   
   
@@ -50,7 +52,7 @@ export const TaskCard = ({
           />
           { note && <p className="text-xs text-white text-ellipsis whitespace-nowrap overflow-hidden">{note}</p>}
           <section className="flex flex-row items-center justify-end gap-2">
-            { state && <p className={`badge ${state}`}>{stateTaskLabels[state]}</p>}
+            { state && <button onClick={() => onChangeState && onChangeState(id)} className={`badge ${state}`}>{typesStates[state].label}</button>}
             {duration && <p className="text-xs text-white">({duration} mins)</p>}
           </section>
         </div>
