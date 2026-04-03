@@ -10,6 +10,7 @@ type PlannerColumnBaseProps = {
   counter: number;
   name: string;
   color?: ColorType;
+  className?: string;
 };
 
 type PlannerColumnWithButton = PlannerColumnBaseProps & {
@@ -26,7 +27,7 @@ type PlannerColumnWithoutButton = PlannerColumnBaseProps & {
 
 type PlannerColumnProps = PlannerColumnWithButton | PlannerColumnWithoutButton;
 
-export const PlannerColumn = ({ children, counter, name, color, showAddButton, handleAddTask, handleMouseDown, id }: PlannerColumnProps) => {
+export const PlannerColumn = ({ children, counter, name, color, showAddButton, handleAddTask, handleMouseDown, id, className = "" }: PlannerColumnProps) => {
     const sectionColorClass = color ? colorClasses[color].section : "";
     const badgeColorClass = color ? colorClasses[color].badge : "";
 
@@ -35,7 +36,7 @@ export const PlannerColumn = ({ children, counter, name, color, showAddButton, h
     })
 
     return (
-        <section ref={ref} className={`flex flex-col gap-2 p-4 w-2/5 rounded-lg ${sectionColorClass} ${isDropTarget ? "border-2 border-opacity-50 border-white" : " border-2 border-transparent"}`}>
+        <section ref={ref} className={`flex w-72 shrink-0 flex-col gap-2 rounded-lg p-4 ${sectionColorClass} ${isDropTarget ? "border-2 border-opacity-50 border-white" : " border-2 border-transparent"} ${className}`}>
             <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-2 items-center">
                     <h3 className={`p-1 rounded ${badgeColorClass} text-white`}>{ name }</h3>
