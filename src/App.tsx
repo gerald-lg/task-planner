@@ -1,14 +1,13 @@
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { DragDropProvider } from '@dnd-kit/react';
 
 import { PlannerColumn, TaskCard } from './planner/components';
-import type { ColorType, Day, PlannedTask, TaskTemplate } from './planner/models';
-import { useTemplateTask } from './planner/hooks';
+import type { ColorType, Day, TaskTemplate } from './planner/models';
+import { usePlannedTask, useTemplateTask } from './planner/hooks';
 
 import './App.css'
 import { getMomentDay } from './planner/helpers/planner';
-import { getNewState } from './planner/helpers';
 
 const initialTasks: TaskTemplate[] = [
   { id: '1', title: 'Task 1', duration: 30, isDraft: false },
@@ -66,76 +65,39 @@ function App() {
     handleOnBlurTask,
     handleSubmitTask,
     setPendingFocusID,
-    getTaskById
+    getAttributeTask,
   } = useTemplateTask(initialTasks);
+
+  const { 
+    plannedTasks,
+    createPlannedTask,
+    onAddPlannedTask,
+    onMovePlannedTask,
+    onChangeStatePlannedTask 
+  } = usePlannedTask([]);
 
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const greeting = `Good ${getMomentDay()}`;
 
-  const [plannedTasks, setPlannedTasks] = useState<PlannedTask[]>([]);
+  const handleDragEnd = (taskId: string, targetId?: string) => {
+    if (!targetId || !dayColumns.some((column) => column.id === targetId)) {
+      return;
+    }
 
-  const handleDragEnd = (taskId: string, plannerColumnId: string) => {
-    if(plannerColumnId !== "todo"){
-      const existTask = plannedTasks.some((task) => task.id === taskId);
-      if(existTask){
-        const task = plannedTasks.find((task) => task.id === taskId) as PlannedTask;
-        if(task.day !== plannerColumnId){
-          onMoveTask(task, plannerColumnId as Day);
-        }
-      }else{
-        const newTask = createPlannedTask(taskId, plannerColumnId as Day);
-        addPlannedTask(newTask);
+    const plannedTask = plannedTasks.find((task) => task.id === taskId);
+
+    if (plannedTask) {
+      if (plannedTask.day !== targetId) {
+        onMovePlannedTask(plannedTask, targetId as Day);
       }
+
+      return;
     }
-  }
 
-  const onMoveTask = (plannedTask: PlannedTask, new_day : Day) => {
-    setPlannedTasks((prev) => 
-      prev.map((task) => {
-        if(task.id === plannedTask.id){
-          return {
-            ...plannedTask,
-            day: new_day
-          }
-        }
-        return task;
-      })
-    )
-  }
-
-  const addPlannedTask = (task: PlannedTask) => {
-    setPlannedTasks((prev) => [...prev, task]);
-  }
-
-  const createPlannedTask = (templateId: string, day: Day): PlannedTask => {
-    return {
-      id: crypto.randomUUID(),
-      templateId,
-      day: day,
-      order: 0,
-      state: "todo",
-    }
-  }
-
-  const getTitleTask = (templateId: string) => {
-    const task = getTaskById(templateId);
-    return task ? task.title : "";
-  }
-
-  const changeStatePlannedTask = (taskId: string) => {
-    setPlannedTasks((prev) => (
-      prev.map((task) => {
-        if(task.id === taskId){
-          return {
-            ...task,
-            state: getNewState(task.state),
-          }
-        }
-        return task;
-      })
-    ))
-  }
-
+    const newTask = createPlannedTask(taskId, targetId as Day);
+    onAddPlannedTask(newTask);
+  };
+  
   useEffect(() => {
     if(pendingFocusID){
       inputRefs.current[pendingFocusID]?.focus();
@@ -151,7 +113,10 @@ function App() {
           onDragEnd={(event) => {
             const { operation } = event;
             const { source, target } = operation;
-            handleDragEnd(source!.id as string, target!.id as string);
+            if (!source) {
+              return;
+            }
+            handleDragEnd(source.id as string, target?.id as string | undefined);
           }}
         >
           <PlannerColumn
@@ -193,14 +158,14 @@ function App() {
                     color={column.color}
                     key={task.id}
                     id={task.id}
-                    title={getTitleTask(task.templateId)}
+                    title={getAttributeTask(task.templateId, "title") as string || ""}
                     state={task.state}
-                    duration={getTaskById(task.templateId)?.duration || 0}
+                    duration={getAttributeTask(task.templateId, "duration") as number || 0}
                     note={task.note || ''}
                     onChange={handleChangeTask}
                     onSubmit={handleSubmitTask}
                     onBlur={handleOnBlurTask}
-                    onChangeState={changeStatePlannedTask}
+                    onChangeState={onChangeStatePlannedTask}
                     refInput={(el) => { inputRefs.current[task.id] = el }}
                   />
                 ))}
