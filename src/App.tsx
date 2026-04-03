@@ -8,6 +8,7 @@ import { useTemplateTask } from './planner/hooks';
 
 import './App.css'
 import { getMomentDay } from './planner/helpers/planner';
+import { getNewState } from './planner/helpers';
 
 const initialTasks: TaskTemplate[] = [
   { id: '1', title: 'Task 1', duration: 30, isDraft: false },
@@ -64,7 +65,8 @@ function App() {
     handleChangeTask,
     handleOnBlurTask,
     handleSubmitTask,
-    setPendingFocusID 
+    setPendingFocusID,
+    getTaskById
   } = useTemplateTask(initialTasks);
 
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
@@ -116,8 +118,22 @@ function App() {
   }
 
   const getTitleTask = (templateId: string) => {
-    const task = tasks.find((t) => t.id === templateId);
+    const task = getTaskById(templateId);
     return task ? task.title : "";
+  }
+
+  const changeStatePlannedTask = (taskId: string) => {
+    setPlannedTasks((prev) => (
+      prev.map((task) => {
+        if(task.id === taskId){
+          return {
+            ...task,
+            state: getNewState(task.state),
+          }
+        }
+        return task;
+      })
+    ))
   }
 
   useEffect(() => {
@@ -178,10 +194,13 @@ function App() {
                     key={task.id}
                     id={task.id}
                     title={getTitleTask(task.templateId)}
-                    duration={0}
+                    state={task.state}
+                    duration={getTaskById(task.templateId)?.duration || 0}
+                    note={task.note || ''}
                     onChange={handleChangeTask}
                     onSubmit={handleSubmitTask}
                     onBlur={handleOnBlurTask}
+                    onChangeState={changeStatePlannedTask}
                     refInput={(el) => { inputRefs.current[task.id] = el }}
                   />
                 ))}
