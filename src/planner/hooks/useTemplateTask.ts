@@ -45,6 +45,11 @@ export const useTemplateTask = (initialState: TaskTemplate[]) => {
         return tasks.find((task) => task.id === id) || null;
     }
 
+    const getAttributeTask = (id: string, attribute: keyof TaskTemplate) => {
+        const task = getTaskById(id);
+        return task ? task[attribute] : null;
+    }
+
     return {
         // variables
         tasks,
@@ -57,5 +62,6 @@ export const useTemplateTask = (initialState: TaskTemplate[]) => {
         handleOnBlurTask,
         handleSubmitTask,
         setPendingFocusID,
+        getAttributeTask,
     }
 }
