@@ -1,4 +1,4 @@
-import { colorClasses } from "../helpers";
+import { colorClasses, typesStates } from "../helpers";
 
 export type Day =
   | "monday"
@@ -9,7 +9,7 @@ export type Day =
   | "saturday"
   | "sunday";
 
-export type StateTask = "todo" | "in-progress" | "done";
+export type StateTask = keyof typeof typesStates;
 
 export interface TaskTemplate {
   id: string;
@@ -32,12 +32,6 @@ export interface PlannerState {
   templates: TaskTemplate[];
   plannedTasks: PlannedTask[];
 }
-
-export const stateTaskLabels: Record<StateTask, string> = {
-  "todo": "Todo",
-  "in-progress": "In progress",
-  "done": "Done",
-};
 
 export type ColorType = keyof typeof colorClasses;
 
