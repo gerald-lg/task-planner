@@ -3,18 +3,11 @@ import { useEffect, useRef } from 'react';
 import { DragDropProvider } from '@dnd-kit/react';
 
 import { PlannerColumn, TaskCard } from './planner/components';
-import type { ColorType, Day, TaskTemplate } from './planner/models';
+import type { ColorType, Day } from './planner/models';
 import { usePlannedTask, useTemplateTask } from './planner/hooks';
 
 import './App.css'
 import { getMomentDay } from './planner/helpers/planner';
-
-const initialTasks: TaskTemplate[] = [
-  { id: '1', title: 'Task 1', duration: 30, isDraft: false },
-  { id: '2', title: 'Task 2', duration: 45, isDraft: false },
-  { id: '3', title: 'Task 3', duration: 60, isDraft: false },
-  { id: '4', title: 'Task 4', duration: 15, isDraft: false },
-];
 
 const dayColumns = [
   {
@@ -55,6 +48,15 @@ const dayColumns = [
 ]
 
 function App() {
+  const getInitialTasks = () => {
+    const saved = localStorage.getItem('tasks');
+    return saved ? JSON.parse(saved) : [];
+  };
+
+  const getInitialPlannedTasks = () => {
+    const saved = localStorage.getItem('plannedTasks');
+    return saved ? JSON.parse(saved) : [];
+  };
 
   const { 
     tasks, 
@@ -66,7 +68,7 @@ function App() {
     handleSubmitTask,
     setPendingFocusID,
     getAttributeTask,
-  } = useTemplateTask(initialTasks);
+  } = useTemplateTask(getInitialTasks());
 
   const { 
     plannedTasks,
@@ -74,10 +76,18 @@ function App() {
     onAddPlannedTask,
     onMovePlannedTask,
     onChangeStatePlannedTask 
-  } = usePlannedTask([]);
+  } = usePlannedTask(getInitialPlannedTasks());
 
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const greeting = `Good ${getMomentDay()}`;
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    localStorage.setItem('plannedTasks', JSON.stringify(plannedTasks));
+  }, [plannedTasks]);
 
   const handleDragEnd = (taskId: string, targetId?: string) => {
     if (!targetId || !dayColumns.some((column) => column.id === targetId)) {
