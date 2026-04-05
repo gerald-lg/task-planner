@@ -41,6 +41,10 @@ export const useTemplateTask = (initialState: TaskTemplate[]) => {
         dispatch({ type: 'SAVE_TASK', payload: { id } });
     }
 
+    const handleDeleteTask = (id: string) => {
+        dispatch({ type: 'DISCARD_TASK', payload: { id } });
+    }
+
     const getTaskById = (id: string) => {
         return tasks.find((task) => task.id === id) || null;
     }
@@ -56,12 +60,13 @@ export const useTemplateTask = (initialState: TaskTemplate[]) => {
         pendingFocusID,
         // handlers
         focusTaskDraft,
+        getAttributeTask,
         getTaskById,
         handleAddTask,
         handleChangeTask,
+        handleDeleteTask,
         handleOnBlurTask,
         handleSubmitTask,
         setPendingFocusID,
-        getAttributeTask,
     }
 }
