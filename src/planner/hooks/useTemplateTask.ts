@@ -43,7 +43,7 @@ export const useTemplateTask = () => {
     }
 
     const handleDeleteTask = (id: string) => {
-        dispatch({ type: 'DISCARD_TASK', payload: { id } });
+        discardTask(id);
     }
 
     const getTaskById = (id: string) => {
