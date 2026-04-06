@@ -1,10 +1,11 @@
-import { useReducer } from "react";
+import { useStore } from "zustand";
+
 import type { Day, PlannedTask } from "../models";
-import { plannedTaskReducer } from "../reducers";
+import { usePlannerStore } from "../store/store";
 
-export const usePlannedTask = (initialState: PlannedTask[]) => {
+export const usePlannedTask = () => {
 
-    const [plannedTasks, dispatch] = useReducer(plannedTaskReducer, initialState);
+    const { plannedTasks, addTask, moveTask, changeTaskState } = useStore(usePlannerStore);
 
     const createPlannedTask = (templateId: string, day: Day): PlannedTask => {
         return {
@@ -17,15 +18,15 @@ export const usePlannedTask = (initialState: PlannedTask[]) => {
     }
 
     const onAddPlannedTask = (task: PlannedTask) => {
-        dispatch({ type: 'ADD_TASK', payload: task });
+        addTask(task);
     }
 
     const onMovePlannedTask = (plannedTask: PlannedTask, new_day : Day) => {
-        dispatch({ type: 'MOVE_TASK', payload: { id: plannedTask.id, day: new_day } });
+        moveTask(plannedTask.id, new_day);
     }
 
     const onChangeStatePlannedTask = (taskId: string) => {
-        dispatch({ type: 'CHANGE_TASK_STATE', payload: { id: taskId } });
+        changeTaskState(taskId);
     }
 
     return {
