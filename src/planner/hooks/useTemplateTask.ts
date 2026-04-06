@@ -1,16 +1,17 @@
-import { useReducer, useState, type SubmitEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import type { TaskTemplate } from "../models";
-import { templateTaskReducer } from "../reducers";
+import { useStore } from "zustand";
+import { usePlannerStore } from "../store/store";
 
 
-export const useTemplateTask = (initialState: TaskTemplate[]) => {
-    const [tasks, dispatch] = useReducer(templateTaskReducer, initialState);
+export const useTemplateTask = () => {
+
+    const { templateTasks : tasks, addTaskDraft, changeTaskTitle, discardTask, saveTask} = useStore(usePlannerStore);
     const [pendingFocusID, setPendingFocusID] = useState<string|null>(null);
-      
 
     const handleAddTask = () => {
         const id = crypto.randomUUID();
-        dispatch({ type: 'ADD_TASK_DRAFT', payload: { id } });
+        addTaskDraft(id);
         setPendingFocusID(id);
     }
 
@@ -24,21 +25,21 @@ export const useTemplateTask = (initialState: TaskTemplate[]) => {
     }
 
     const handleChangeTask = (value: string, id: string) => {
-        dispatch({ type: 'CHANGE_TASK_TITLE', payload: { id, title: value } }); 
+        changeTaskTitle(id, value);
     }
 
     const handleOnBlurTask = (value: string, id: string) => {
         if(value.trim() === ""){
-            dispatch({ type: 'DISCARD_TASK', payload: { id } });
+            discardTask(id);
         }
         else{
-            dispatch({ type: 'SAVE_TASK', payload: { id } });
+            saveTask(id);
         }
     }
 
     const handleSubmitTask = (e:SubmitEvent<HTMLFormElement>, id:string) => {
         e.preventDefault();
-        dispatch({ type: 'SAVE_TASK', payload: { id } });
+        saveTask(id);
     }
 
     const handleDeleteTask = (id: string) => {
