@@ -14,7 +14,7 @@ interface TaskCardProps {
     onChange: (value: string, id: string) => void;
     onSubmit: (e: SubmitEvent<HTMLFormElement>, id: string) => void;
     onBlur: (value: string, id: string) => void;
-    refInput: Ref<HTMLInputElement>,
+    refInput: Ref<HTMLInputElement>;
     onChangeState?: (id: string) => void;
 }
 
