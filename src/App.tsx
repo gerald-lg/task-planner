@@ -122,17 +122,22 @@ function App() {
             handleMouseDown={focusTaskDraft}
           >
             {tasks.map((task) => (
-              <TaskCard
-                color="sky"
-                key={task.id} 
-                id={task.id} 
-                title={task.title} 
-                duration={task.duration} 
-                onChange={handleChangeTask} 
-                onSubmit={handleSubmitTask} 
-                onBlur={handleOnBlurTask}
-                refInput={(el) => { inputRefs.current[task.id] = el }}
-              />
+              <TaskCard.Root color="sky" key={task.id} id={task.id}>
+                <div className="text-white">
+                  <TaskCard.InputTitle
+                    title={task.title}
+                    onChange={handleChangeTask}
+                    onSubmit={handleSubmitTask}
+                    onBlur={handleOnBlurTask}
+                    refInput={(el) => {
+                      inputRefs.current[task.id] = el;
+                    }}
+                  />
+                  <section className="flex flex-row items-center justify-end gap-2">
+                    <TaskCard.Duration duration={task.duration} />
+                  </section>
+                </div>
+              </TaskCard.Root>
             ))}
           </PlannerColumn>
 
@@ -147,20 +152,18 @@ function App() {
                 showAddButton={false}
               >
                 {plannedTasks.filter((task) => task.day === column.id).map((task) => (
-                  <TaskCard
-                    color={column.color}
-                    key={task.id}
-                    id={task.id}
-                    title={getAttributeTask(task.templateId, "title") as string || ""}
-                    state={task.state}
-                    duration={getAttributeTask(task.templateId, "duration") as number || 0}
-                    note={task.note || ''}
-                    onChange={handleChangeTask}
-                    onSubmit={handleSubmitTask}
-                    onBlur={handleOnBlurTask}
-                    onChangeState={onChangeStatePlannedTask}
-                    refInput={(el) => { inputRefs.current[task.id] = el }}
-                  />
+                  <TaskCard.Root color={column.color} key={task.id} id={task.id}>
+                    <div className="text-white">
+                      <TaskCard.Title
+                        title={(getAttributeTask(task.templateId, "title") as string) || ""}
+                      />
+                      <TaskCard.Note note={task.note || ""} />
+                      <section className="flex flex-row items-center justify-end gap-2">
+                        <TaskCard.State state={task.state} onChangeState={onChangeStatePlannedTask} />
+                        <TaskCard.Duration duration={(getAttributeTask(task.templateId, "duration") as number) || 0} />
+                      </section>
+                    </div>
+                  </TaskCard.Root>
                 ))}
               </PlannerColumn>
             ))
