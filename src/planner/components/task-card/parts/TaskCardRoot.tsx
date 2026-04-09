@@ -1,7 +1,7 @@
 import { useDraggable } from "@dnd-kit/react";
 
-import { colorClasses } from "../../helpers";
-import type { ColorType } from "../../models";
+import { colorClasses } from "../../../helpers";
+import type { ColorType } from "../../../models";
 import { TaskCardProvider } from "./TaskCardContext";
 
 interface TaskCardRootProps {

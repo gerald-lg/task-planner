@@ -5,7 +5,7 @@ import {
   TaskCardRoot,
   TaskCardState,
   TaskCardTitle,
-} from "./TaskCardComponent";
+} from ".";
 
 export const TaskCard = {
   Root: TaskCardRoot,
