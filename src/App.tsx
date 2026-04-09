@@ -2,50 +2,14 @@
 import { useEffect, useRef } from 'react';
 import { DragDropProvider } from '@dnd-kit/react';
 
-import { PlannerColumn, TaskCard } from './planner/components';
-import type { ColorType, Day } from './planner/models';
+import { PlannerColumn } from './planner/components';
+import type { Day } from './planner/models';
 import { usePlannedTask, useTemplateTask } from './planner/hooks';
+import { dayColumns } from './planner/config';
 
 import './App.css'
 import { getMomentDay } from './planner/helpers/planner';
-
-const dayColumns = [
-  {
-    id: "monday" as Day,
-    name: "Monday",
-    color: "green" as ColorType,
-  },
-  {
-    id: "tuesday" as Day,
-    name: "Tuesday",
-    color: "blue" as ColorType,
-  },
-  {
-    id: "wednesday" as Day,
-    name: "Wednesday",
-    color: "red" as ColorType,
-  },
-  {
-    id: "thursday" as Day,
-    name: "Thursday",
-    color: "yellow" as ColorType,
-  },
-  {
-    id: "friday" as Day,
-    name: "Friday",
-    color: "green" as ColorType,
-  },
-  {
-    id: "saturday" as Day,
-    name: "Saturday",
-    color: "sky" as ColorType,
-  },
-  {
-    id: "sunday" as Day,
-    name: "Sunday",
-    color: "yellow" as ColorType,
-  },
-]
+import { TaskPlannedCard, TaskTemplateCard } from './planner/components';
 
 function App() {
 
@@ -122,22 +86,19 @@ function App() {
             handleMouseDown={focusTaskDraft}
           >
             {tasks.map((task) => (
-              <TaskCard.Root color="sky" key={task.id} id={task.id}>
-                <div className="text-white">
-                  <TaskCard.InputTitle
-                    title={task.title}
-                    onChange={handleChangeTask}
-                    onSubmit={handleSubmitTask}
-                    onBlur={handleOnBlurTask}
-                    refInput={(el) => {
-                      inputRefs.current[task.id] = el;
-                    }}
-                  />
-                  <section className="flex flex-row items-center justify-end gap-2">
-                    <TaskCard.Duration duration={task.duration} />
-                  </section>
-                </div>
-              </TaskCard.Root>
+              <TaskTemplateCard 
+                key={task.id}
+                id={task.id}
+                title={task.title}
+                duration={task.duration}
+                color="sky"
+                onChange={handleChangeTask}
+                onBlur={handleOnBlurTask}
+                onSubmit={handleSubmitTask}
+                refInput={(el) => {
+                  inputRefs.current[task.id] = el;
+                }}
+              />
             ))}
           </PlannerColumn>
 
@@ -152,18 +113,14 @@ function App() {
                 showAddButton={false}
               >
                 {plannedTasks.filter((task) => task.day === column.id).map((task) => (
-                  <TaskCard.Root color={column.color} key={task.id} id={task.id}>
-                    <div className="text-white">
-                      <TaskCard.Title
-                        title={(getAttributeTask(task.templateId, "title") as string) || ""}
-                      />
-                      <TaskCard.Note note={task.note || ""} />
-                      <section className="flex flex-row items-center justify-end gap-2">
-                        <TaskCard.State state={task.state} onChangeState={onChangeStatePlannedTask} />
-                        <TaskCard.Duration duration={(getAttributeTask(task.templateId, "duration") as number) || 0} />
-                      </section>
-                    </div>
-                  </TaskCard.Root>
+                  <TaskPlannedCard
+                    key={task.id}
+                    task={task}
+                    title={(getAttributeTask(task.templateId, "title") as string) || ""}
+                    duration={(getAttributeTask(task.templateId, "duration") as number) || 0}
+                    color={column.color}
+                    onChangeState={onChangeStatePlannedTask}
+                  />
                 ))}
               </PlannerColumn>
             ))
