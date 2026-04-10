@@ -1,8 +1,8 @@
 import { type ReactNode } from "react";
 import { useDroppable } from "@dnd-kit/react";
 
-import type { ColorType } from "../models";
-import { colorClasses } from "../helpers";
+import { colorClasses } from "@planner/helpers";
+import type { ColorType } from "@planner/models";
 
 type PlannerColumnBaseProps = {
   id: string;

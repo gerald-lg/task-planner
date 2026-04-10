@@ -1,5 +1,5 @@
 import type { StateCreator } from "zustand";
-import type { TaskTemplate } from "../../models";
+import type { TaskTemplate } from "@planner/models";
 
 
 export interface TemplateTasksSlice {

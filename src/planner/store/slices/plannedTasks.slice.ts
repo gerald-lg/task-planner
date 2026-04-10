@@ -1,6 +1,7 @@
 import type { StateCreator } from 'zustand';
-import type { Day, PlannedTask } from '../../models';
-import { getNewState } from '../../helpers';
+
+import { getNewState } from '@planner/helpers';
+import type { Day, PlannedTask } from '@planner/models';
 
 export interface PlannedTaskSlice {
     plannedTasks: PlannedTask[],

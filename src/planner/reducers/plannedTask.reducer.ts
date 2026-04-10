@@ -1,5 +1,5 @@
-import { getNewState } from "../helpers";
-import type { Day, PlannedTask } from "../models";
+import { getNewState } from "@planner/helpers";
+import type { Day, PlannedTask } from "@planner/models";
 
 type PlannedTaskAction = 
   | { type: 'ADD_TASK'; payload: PlannedTask }

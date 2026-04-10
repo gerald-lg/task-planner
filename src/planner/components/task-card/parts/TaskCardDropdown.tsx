@@ -1,8 +1,8 @@
 
 import type { ReactNode } from "react";
 
-import { colorClasses } from "../../../helpers";
-import { useDropdownButton } from "../../../hooks/useDropdownButton";
+import { colorClasses } from "@planner/helpers";
+import { useDropdownButton } from "@planner/hooks/useDropdownButton";
 import { useTaskCardContext } from "./TaskCardContext";
 
 type MenuAction = {

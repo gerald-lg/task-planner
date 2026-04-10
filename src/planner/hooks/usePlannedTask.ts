@@ -1,7 +1,7 @@
 import { useStore } from "zustand";
 
-import type { Day, PlannedTask } from "../models";
-import { usePlannerStore } from "../store/store";
+import type { Day, PlannedTask } from "@planner/models";
+import { usePlannerStore } from "@planner/store/store";
 
 export const usePlannedTask = () => {
 

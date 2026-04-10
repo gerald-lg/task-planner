@@ -1,4 +1,4 @@
-import { colorClasses, typesStates } from "../helpers";
+import { colorClasses, typesStates } from "@planner/helpers";
 
 export type Day =
   | "monday"

@@ -1,4 +1,4 @@
-import type { ColorType, Day } from "../models";
+import type { ColorType, Day } from "@planner/models";
 
 interface DayColumn {
   id: Day;

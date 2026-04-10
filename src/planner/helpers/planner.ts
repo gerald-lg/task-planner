@@ -1,4 +1,4 @@
-import type { MomentDay } from "../models";
+import type { MomentDay } from "@planner/models";
 
 export const getMomentDay = (): MomentDay => {
     const now = new Date();

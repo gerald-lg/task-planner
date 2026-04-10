@@ -1,5 +1,5 @@
-import { typesStates } from "../../../helpers";
-import type { StateTask } from "../../../models";
+import { typesStates } from "@planner/helpers";
+import type { StateTask } from "@planner/models";
 import { useTaskCardContext } from "./TaskCardContext";
 
 interface TaskCardStateProps {

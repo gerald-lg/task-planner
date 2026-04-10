@@ -1,5 +1,6 @@
+import type { ColorType, PlannedTask } from "@planner/models"
+
 import { TaskCard } from ".."
-import type { ColorType, PlannedTask } from "../../../models"
 
 interface TaskPlannedCardProps {
     color: ColorType;

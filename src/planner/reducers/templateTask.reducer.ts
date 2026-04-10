@@ -1,4 +1,4 @@
-import type { TaskTemplate } from "../models";
+import type { TaskTemplate } from "@planner/models";
 
 type TemplateTaskAction =
   | { type: 'ADD_TASK_DRAFT'; payload: { id: string } }

@@ -1,7 +1,7 @@
 import { useState, type SubmitEvent } from "react";
-import type { TaskTemplate } from "../models";
+import type { TaskTemplate } from "@planner/models";
 import { useStore } from "zustand";
-import { usePlannerStore } from "../store/store";
+import { usePlannerStore } from "@planner/store/store";
 
 
 export const useTemplateTask = () => {

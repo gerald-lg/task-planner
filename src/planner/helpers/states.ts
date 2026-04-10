@@ -1,4 +1,4 @@
-import type { StateTask } from "../models"
+import type { StateTask } from "@planner/models"
 
 export const typesStates = {
     'todo': {

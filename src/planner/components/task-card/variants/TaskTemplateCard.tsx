@@ -1,7 +1,7 @@
 import type { Ref, SubmitEvent } from "react";
 import { Pencil, Trash } from "lucide-react";
 
-import type { ColorType } from "../../../models/planner.types";
+import type { ColorType } from "@planner/models";
 import { TaskCard } from "../TaskCard";
 
 
