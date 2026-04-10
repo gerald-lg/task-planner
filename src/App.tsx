@@ -23,6 +23,7 @@ function App() {
     handleSubmitTask,
     setPendingFocusID,
     getAttributeTask,
+    handleDeleteTask,
   } = useTemplateTask();
 
   const { 
@@ -98,6 +99,8 @@ function App() {
                 refInput={(el) => {
                   inputRefs.current[task.id] = el;
                 }}
+                onEdit={() => {}}
+                onDelete={handleDeleteTask}
               />
             ))}
           </PlannerColumn>
