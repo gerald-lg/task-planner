@@ -4,6 +4,7 @@ export * from "./parts/TaskCardNote";
 export * from "./parts/TaskCardRoot";
 export * from "./parts/TaskCardState";
 export * from "./parts/TaskCardTitle";
+export * from "./parts/TaskCardDropdown";
 
 export * from "./TaskCard";
 
