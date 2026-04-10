@@ -45,7 +45,7 @@ export const TaskCardDropdown = ({ actions }: TaskCardDropdownProps) => {
                 aria-haspopup="menu"
                 aria-label="Open task actions"
                 className={[
-                    "rounded-md border p-2 text-sm font-medium leading-5 text-white",
+                    "rounded-md border p-1 text-sm font-medium leading-5 text-white",
                     "transition-colors duration-150 ease-out",
                     "focus:outline-none focus-visible:bg-white/10 focus-visible:border-white/10",
                     "focus-visible:shadow-[0_0_0_1px_rgba(255,255,255,0.12)]",
