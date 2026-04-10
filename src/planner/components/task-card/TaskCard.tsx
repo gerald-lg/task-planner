@@ -1,4 +1,5 @@
 import {
+  TaskCardDropdown,
   TaskCardDuration,
   TaskCardInputTitle,
   TaskCardNote,
@@ -14,4 +15,5 @@ export const TaskCard = {
   Note: TaskCardNote,
   State: TaskCardState,
   Duration: TaskCardDuration,
+  Dropdown: TaskCardDropdown,
 };
