@@ -92,6 +92,7 @@ function App() {
                 id={task.id}
                 title={task.title}
                 duration={task.duration}
+                data={task}
                 color="sky"
                 onChange={handleChangeTask}
                 onBlur={handleOnBlurTask}
