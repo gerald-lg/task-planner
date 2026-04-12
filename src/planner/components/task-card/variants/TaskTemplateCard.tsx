@@ -1,64 +1,100 @@
 import type { Ref, SubmitEvent } from "react";
 import { Pencil, Trash } from "lucide-react";
 
-import type { ColorType } from "@planner/models";
+import type { ColorType, TaskTemplate } from "@planner/models";
+import { Modal, EditTaskModalContent, useEditTaskModal } from "@planner/components/shared/modal";
+import type { EditTaskModalPayload } from "@planner/components/shared/modal/types";
 import { TaskCard } from "../TaskCard";
-
 
 interface TaskTemplateCardProps {
     color: ColorType;
     id: string;
     title: string;
     duration?: number;
+    data: TaskTemplate;
     onChange: (id: string, value: string) => void;
     onBlur: (id: string, value: string) => void;
     onSubmit: (e: SubmitEvent<HTMLFormElement>, id: string) => void;
     refInput: Ref<HTMLInputElement>;
-    onEdit: (id:string) => void;
-    onDelete: (id:string) => void;
+    onEdit: (id: string) => void;
+    onDelete: (id: string) => void;
 }
 
-const buildTemplateCardActions = ({ id, onDelete, onEdit}: Pick<TaskTemplateCardProps, "id" | "onDelete" | "onEdit">) => {
+const buildTemplateCardActions = (params: {
+    id: string;
+    onDelete: (id: string) => void;
+    onEditModal: () => void;
+}) => {
     return [
         {
             id: "edit",
             label: "Edit",
             icon: <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />,
-            onClick: () => onEdit(id),
+            onClick: params.onEditModal,
         },
         {
             id: "delete",
             label: "Delete",
             icon: <Trash className="mr-2 h-4 w-4" aria-hidden="true" />,
-            onClick: () => onDelete(id),
+            onClick: () => params.onDelete(params.id),
         },
     ];
 };
 
-export const TaskTemplateCard = ({ color, id, title, duration, onChange, onBlur, onSubmit, refInput, onEdit, onDelete }: TaskTemplateCardProps) => {
-    const actions = buildTemplateCardActions({ id, onDelete, onEdit });
+const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur, onSubmit, refInput, onEdit, onDelete, data }: TaskTemplateCardProps) => {
+    const { openWith } = useEditTaskModal();
+
+    const handleEditClick = () => {
+        const payload: EditTaskModalPayload = {
+            kind: "template",
+            color,
+            data,
+        };
+        openWith(payload);
+        onEdit(id);
+    };
+
+    const actions = buildTemplateCardActions({
+        id,
+        onDelete,
+        onEditModal: handleEditClick,
+    });
 
     return (
-        <TaskCard.Root color={color} key={id} id={id}>
-            <div className="text-white">
-                <div className="flex flex-row items-start gap-1">
-                    <div className="min-w-0 flex-1">
-                        <TaskCard.InputTitle
-                            title={title}
-                            onChange={onChange}
-                            onSubmit={onSubmit}
-                            onBlur={onBlur}
-                            refInput={refInput}
-                        />
+        <>
+            <TaskCard.Root color={color} key={id} id={id}>
+                <div className="text-white">
+                    <div className="flex flex-row items-start gap-1">
+                        <div className="min-w-0 flex-1">
+                            <TaskCard.InputTitle
+                                title={title}
+                                onChange={onChange}
+                                onSubmit={onSubmit}
+                                onBlur={onBlur}
+                                refInput={refInput}
+                            />
+                        </div>
+                        <div className="-mr-1 -mt-1 shrink-0 self-start">
+                            <TaskCard.Dropdown actions={actions} />
+                        </div>
                     </div>
-                    <div className="-mr-1 -mt-1 shrink-0 self-start">
-                        <TaskCard.Dropdown actions={actions} />
-                    </div>
+                    <section className="flex flex-row items-center justify-end gap-2">
+                        <TaskCard.Duration duration={duration} />
+                    </section>
                 </div>
-                <section className="flex flex-row items-center justify-end gap-2">
-                    <TaskCard.Duration duration={duration} />
-                </section>
-            </div>
-        </TaskCard.Root>
+            </TaskCard.Root>
+
+            <Modal.Content>
+                <EditTaskModalContent />
+            </Modal.Content>
+        </>
+    );
+};
+
+export const TaskTemplateCard = (props: TaskTemplateCardProps) => {
+    return (
+        <Modal.Root>
+            <TaskTemplateCardContent {...props} />
+        </Modal.Root>
     );
 };
