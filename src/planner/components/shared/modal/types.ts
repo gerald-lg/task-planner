@@ -1,12 +1,14 @@
-import type { TaskTemplate, PlannedTask } from "@planner/models";
+import type { ColorType, TaskTemplate, PlannedTask } from "@planner/models";
 
 
 export type EditTaskModalPayload =
   | {
       kind: "template";
+      color: ColorType;
       data: TaskTemplate;
     }
   | {
       kind: "planned";
-      data: PlannedTask & { title: string; color?: string; duration?: number };
+      color: ColorType;
+      data: PlannedTask & { title: string; duration?: number };
     };
