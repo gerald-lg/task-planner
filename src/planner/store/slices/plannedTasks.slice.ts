@@ -8,6 +8,7 @@ export interface PlannedTaskSlice {
     addTask: (task: PlannedTask) => void;
     moveTask: (id: string, day: Day) => void;
     changeTaskState: (id: string) => void;
+    deleteTask: (id: string) => void;
 }
 
 export const createPlannedTasksSlice : StateCreator<PlannedTaskSlice> = (set) => ({
@@ -33,6 +34,11 @@ export const createPlannedTasksSlice : StateCreator<PlannedTaskSlice> = (set) =>
                 ? { ...task, state: getNewState(task.state)}
                 : task
             )
+        }
+    }),
+    deleteTask: (id: string) => set((state) => {
+        return {
+            plannedTasks: state.plannedTasks.filter((task) => task.id !== id)
         }
     })
 
