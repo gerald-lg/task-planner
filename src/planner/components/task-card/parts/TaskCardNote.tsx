@@ -13,7 +13,7 @@ export const TaskCardNote = ({ note }: TaskCardNoteProps) => {
   }
 
   return (
-    <p className="text-xs text-white text-ellipsis whitespace-nowrap overflow-hidden">{note}</p>
+    <p className="text-xs text-gray-200 text-left text-ellipsis whitespace-nowrap overflow-hidden mb-2">{note}</p>
   )
 }
 
