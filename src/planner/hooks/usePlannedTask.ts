@@ -5,7 +5,7 @@ import { usePlannerStore } from "@planner/store/store";
 
 export const usePlannedTask = () => {
 
-    const { plannedTasks, addTask, moveTask, changeTaskState, deleteTask } = useStore(usePlannerStore);
+    const { plannedTasks, addTask, moveTask, changeTaskState, deleteTask, editPlannedTask } = useStore(usePlannerStore);
 
     const createPlannedTask = (templateId: string, day: Day): PlannedTask => {
         return {
@@ -33,12 +33,17 @@ export const usePlannedTask = () => {
         deleteTask(taskId);
     }
 
+    const onEditPlannedTask = (id: string, values: Partial<PlannedTask>) => {
+        editPlannedTask(id, values);
+    }
+
     return {
         createPlannedTask,
         onAddPlannedTask,
         onChangeStatePlannedTask,
         onDeletePlannedTask,
         onMovePlannedTask,
+        onEditPlannedTask,
         plannedTasks,
     }
 }

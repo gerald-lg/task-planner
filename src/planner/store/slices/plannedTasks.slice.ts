@@ -9,6 +9,7 @@ export interface PlannedTaskSlice {
     moveTask: (id: string, day: Day) => void;
     changeTaskState: (id: string) => void;
     deleteTask: (id: string) => void;
+    editPlannedTask: (id: string, values: Partial<PlannedTask>) => void;
 }
 
 export const createPlannedTasksSlice : StateCreator<PlannedTaskSlice> = (set) => ({
@@ -39,6 +40,15 @@ export const createPlannedTasksSlice : StateCreator<PlannedTaskSlice> = (set) =>
     deleteTask: (id: string) => set((state) => {
         return {
             plannedTasks: state.plannedTasks.filter((task) => task.id !== id)
+        }
+    }),
+    editPlannedTask: (id: string, values: Partial<PlannedTask>) => set((state) => {
+        return {
+            plannedTasks: state.plannedTasks.map((task) => 
+                task.id === id
+                ? { ...task, ...values }
+                : task
+            )
         }
     })
 
