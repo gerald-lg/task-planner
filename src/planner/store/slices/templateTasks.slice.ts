@@ -8,6 +8,7 @@ export interface TemplateTasksSlice {
     changeTaskTitle: (id: string, title: string) => void;
     saveTask: (id: string) => void;
     discardTask: (id: string) => void;
+    editTemplateTask: (id: string, values: Partial<TaskTemplate>) => void;
 }
 
 const initialTasks: TaskTemplate[] = [
@@ -58,5 +59,14 @@ export const createTemplateTasksSlice : StateCreator<TemplateTasksSlice> = (set)
             templateTasks: state.templateTasks.filter((task) => task.id !== id)
         }
     }),
+    editTemplateTask: (id: string, values: Partial<TaskTemplate>) => set((state) => {
+        return {
+            templateTasks: state.templateTasks.map((task) => 
+                task.id === id
+                ? { ...task, ...values }
+                : task
+            )
+        }
+    })
 
 })

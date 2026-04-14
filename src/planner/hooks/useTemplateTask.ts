@@ -6,7 +6,7 @@ import { usePlannerStore } from "@planner/store/store";
 
 export const useTemplateTask = () => {
 
-    const { templateTasks : tasks, addTaskDraft, changeTaskTitle, discardTask, saveTask} = useStore(usePlannerStore);
+    const { templateTasks : tasks, addTaskDraft, changeTaskTitle, discardTask, saveTask, editTemplateTask } = useStore(usePlannerStore);
     const [pendingFocusID, setPendingFocusID] = useState<string|null>(null);
 
     const handleAddTask = () => {
@@ -46,6 +46,10 @@ export const useTemplateTask = () => {
         discardTask(id);
     }
 
+    const handleEditTask = (id: string, values: Partial<TaskTemplate>) => {
+        editTemplateTask(id, values);
+    }
+
     const getTaskById = (id: string) => {
         return tasks.find((task) => task.id === id) || null;
     }
@@ -68,6 +72,7 @@ export const useTemplateTask = () => {
         handleDeleteTask,
         handleOnBlurTask,
         handleSubmitTask,
+        handleEditTask,
         setPendingFocusID,
     }
 }
