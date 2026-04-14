@@ -24,6 +24,7 @@ function App() {
     setPendingFocusID,
     getAttributeTask,
     handleDeleteTask,
+    handleEditTask
   } = useTemplateTask();
 
   const { 
@@ -31,7 +32,9 @@ function App() {
     createPlannedTask,
     onAddPlannedTask,
     onMovePlannedTask,
-    onChangeStatePlannedTask 
+    onChangeStatePlannedTask,
+    onDeletePlannedTask,
+    onEditPlannedTask
   } = usePlannedTask();
 
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
@@ -100,7 +103,7 @@ function App() {
                 refInput={(el) => {
                   inputRefs.current[task.id] = el;
                 }}
-                onEdit={() => {}}
+                onEdit={handleEditTask}
                 onDelete={handleDeleteTask}
               />
             ))}
@@ -124,6 +127,8 @@ function App() {
                     duration={(getAttributeTask(task.templateId, "duration") as number) || 0}
                     color={column.color}
                     onChangeState={onChangeStatePlannedTask}
+                    onDelete={onDeletePlannedTask}
+                    onEdit={onEditPlannedTask}
                   />
                 ))}
               </PlannerColumn>
