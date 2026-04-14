@@ -2,8 +2,7 @@ import type { Ref, SubmitEvent } from "react";
 import { Pencil, Trash } from "lucide-react";
 
 import type { ColorType, TaskTemplate } from "@planner/models";
-import { Modal, EditTaskModalContent, useEditTaskModal } from "@planner/components/shared/modal";
-import type { EditTaskModalPayload } from "@planner/components/shared/modal/types";
+import { Modal, EditTaskModalContent, useEditTaskModal, type EditTaskModalPayload } from "@planner/components/shared/modal";
 import { TaskCard } from "../TaskCard";
 
 interface TaskTemplateCardProps {
@@ -16,7 +15,7 @@ interface TaskTemplateCardProps {
     onBlur: (id: string, value: string) => void;
     onSubmit: (e: SubmitEvent<HTMLFormElement>, id: string) => void;
     refInput: Ref<HTMLInputElement>;
-    onEdit: (id: string) => void;
+    onEdit: (id: string, values: Partial<TaskTemplate>) => void;
     onDelete: (id: string) => void;
 }
 
@@ -49,9 +48,10 @@ const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur,
             kind: "template",
             color,
             data,
+            onSubmit: onEdit,
         };
+        
         openWith(payload);
-        onEdit(id);
     };
 
     const actions = buildTemplateCardActions({

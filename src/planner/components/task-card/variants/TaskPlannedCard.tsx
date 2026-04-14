@@ -2,7 +2,7 @@ import type { ColorType, PlannedTask } from "@planner/models"
 
 import { TaskCard } from ".."
 import { Pencil, Trash } from "lucide-react";
-import { EditTaskModalContent, Modal, useEditTaskModal, type EditTaskModalPayload } from "../..";
+import { EditTaskModalContent, Modal, useEditTaskModal, type EditTaskModalPayload } from "@planner/components/shared/modal";
 
 interface TaskPlannedCardProps {
   color: ColorType;
@@ -11,7 +11,7 @@ interface TaskPlannedCardProps {
   duration: number;
   onChangeState: (id: string) => void;
   onDelete: (id: string) => void;
-  onEdit: (id: string) => void;
+  onEdit: (id: string, values: Partial<PlannedTask>) => void;
 }
 
 const buildPlannedCardActions = (params: { id: string; onDelete: (id: string) => void; onEditModal: () => void }) => {
