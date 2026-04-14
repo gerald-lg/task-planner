@@ -20,7 +20,7 @@ export const TaskCardInputTitle = ({ refInput, title, onChange, onBlur, onSubmit
             name="title"
             type="text"
             placeholder="Enter title..."
-            className="text-md font-semibold text-white w-full placeholder:text-gray-100 focus:outline-none bg-transparent text-ellipsis whitespace-nowrap overflow-hidden"
+            className="w-full rounded-lg border border-white/30 bg-white/10 px-2 py-1 text-md font-semibold text-white placeholder:text-gray-200 text-ellipsis whitespace-nowrap overflow-hidden shadow-sm transition focus:border-white focus:outline-none focus:ring-2 focus:ring-white/30"
             value={title}
             onChange={(e) => onChange(e.target.value, id)}
             onBlur={(e) => onBlur(e.target.value, id)}
