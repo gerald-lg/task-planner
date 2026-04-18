@@ -2,7 +2,7 @@ import type { Ref, SubmitEvent } from "react";
 import { Pencil, Trash } from "lucide-react";
 
 import type { ColorType, TaskTemplate } from "@planner/models";
-import { Modal, EditTaskModalContent, useEditTaskModal, type EditTaskModalPayload } from "@planner/components/shared/modal";
+import { ConfirmationModalContent, EditTaskModalContent, Modal, useConfirmationModal, useEditTaskModal, type EditTaskModalPayload } from "@planner/components/shared/modal";
 import { TaskCard } from "../TaskCard";
 
 interface TaskTemplateCardProps {
@@ -17,11 +17,11 @@ interface TaskTemplateCardProps {
     refInput: Ref<HTMLInputElement>;
     onEdit: (id: string, values: Partial<TaskTemplate>) => void;
     onDelete: (id: string) => void;
+    associatedPlannedCount: number;
 }
 
 const buildTemplateCardActions = (params: {
-    id: string;
-    onDelete: (id: string) => void;
+    onDeleteModal: () => void;
     onEditModal: () => void;
 }) => {
     return [
@@ -35,13 +35,14 @@ const buildTemplateCardActions = (params: {
             id: "delete",
             label: "Delete",
             icon: <Trash className="mr-2 h-4 w-4" aria-hidden="true" />,
-            onClick: () => params.onDelete(params.id),
+            onClick: params.onDeleteModal,
         },
     ];
 };
 
-const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur, onSubmit, refInput, onEdit, onDelete, data }: TaskTemplateCardProps) => {
+const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur, onSubmit, refInput, onEdit, onDelete, data, associatedPlannedCount }: TaskTemplateCardProps) => {
     const { openWith } = useEditTaskModal();
+    const { openWith: openConfirmationWith } = useConfirmationModal();
 
     const handleEditClick = () => {
         const payload: EditTaskModalPayload = {
@@ -54,9 +55,25 @@ const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur,
         openWith(payload);
     };
 
+    const handleDeleteClick = () => {
+        const description = associatedPlannedCount > 0
+            ? `Are you sure you want to delete this template? This action will also remove ${associatedPlannedCount} planned task(s) associated with it.`
+            : "Are you sure you want to delete this template? This action cannot be undone.";
+
+        openConfirmationWith({
+            kind: "confirmation",
+            variant: "warning",
+            title: "Delete template",
+            description,
+            confirmLabel: "Delete",
+            cancelLabel: "Cancel",
+            onConfirm: () => onDelete(id),
+        });
+
+    };
+
     const actions = buildTemplateCardActions({
-        id,
-        onDelete,
+        onDeleteModal: handleDeleteClick,
         onEditModal: handleEditClick,
     });
 
@@ -86,6 +103,7 @@ const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur,
 
             <Modal.Content>
                 <EditTaskModalContent />
+                <ConfirmationModalContent />
             </Modal.Content>
         </>
     );
