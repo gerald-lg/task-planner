@@ -57,13 +57,13 @@ const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur,
 
     const handleDeleteClick = () => {
         const description = associatedPlannedCount > 0
-            ? `Are you sure you want to delete this template? This action will also remove ${associatedPlannedCount} planned task(s) associated with it.`
-            : "Are you sure you want to delete this template? This action cannot be undone.";
+            ? `Are you sure you want to delete this task? This action will also remove ${associatedPlannedCount} planned task(s) associated with it.`
+            : "Are you sure you want to delete this task? This action cannot be undone.";
 
         openConfirmationWith({
             kind: "confirmation",
             variant: "warning",
-            title: "Delete template",
+            title: "Delete task",
             description,
             confirmLabel: "Delete",
             cancelLabel: "Cancel",
