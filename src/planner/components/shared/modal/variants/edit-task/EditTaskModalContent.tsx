@@ -11,7 +11,7 @@ export const EditTaskModalContent = () => {
     Partial<Record<"title" | "duration" | "day" | "state" | "note", string>>
   >({});
 
-  if (!payload) return null;
+  if (!payload || payload.kind === "confirmation") return null;
 
   const isTemplate = payload.kind === "template";
   const isPlanned = payload.kind === "planned";
