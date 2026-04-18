@@ -24,7 +24,8 @@ function App() {
     setPendingFocusID,
     getAttributeTask,
     handleDeleteTask,
-    handleEditTask
+    handleEditTask,
+    getPlannedCount,
   } = useTemplateTask();
 
   const { 
@@ -105,6 +106,7 @@ function App() {
                 }}
                 onEdit={handleEditTask}
                 onDelete={handleDeleteTask}
+                associatedPlannedCount={getPlannedCount(task.id)}
               />
             ))}
           </PlannerColumn>
