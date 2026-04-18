@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from "react";
+import { useMemo, useState, type SubmitEvent } from "react";
 import type { TaskTemplate } from "@planner/models";
 import { useStore } from "zustand";
 import { usePlannerStore } from "@planner/store/store";
@@ -6,7 +6,7 @@ import { usePlannerStore } from "@planner/store/store";
 
 export const useTemplateTask = () => {
 
-    const { templateTasks : tasks, addTaskDraft, changeTaskTitle, discardTask, saveTask, editTemplateTask } = useStore(usePlannerStore);
+    const { templateTasks : tasks, plannedTasks, addTaskDraft, changeTaskTitle, discardTask, saveTask, editTemplateTask, deleteTasksByTemplateId } = useStore(usePlannerStore);
     const [pendingFocusID, setPendingFocusID] = useState<string|null>(null);
 
     const handleAddTask = () => {
@@ -43,12 +43,20 @@ export const useTemplateTask = () => {
     }
 
     const handleDeleteTask = (id: string) => {
+        deleteTasksByTemplateId(id);
         discardTask(id);
     }
 
     const handleEditTask = (id: string, values: Partial<TaskTemplate>) => {
         editTemplateTask(id, values);
     }
+
+    const associatedPlannedCountByTemplateId = useMemo(() => {
+        return plannedTasks.reduce<Record<string, number>>((acc, task) => {
+            acc[task.templateId] = (acc[task.templateId] ?? 0) + 1;
+            return acc;
+        }, {});
+    }, [plannedTasks]);
 
     const getTaskById = (id: string) => {
         return tasks.find((task) => task.id === id) || null;
@@ -59,6 +67,10 @@ export const useTemplateTask = () => {
         return task ? task[attribute] : null;
     }
 
+    const getPlannedCount = (templateId: string) => {
+        return associatedPlannedCountByTemplateId[templateId] ?? 0;
+    }
+
     return {
         // variables
         tasks,
@@ -66,6 +78,7 @@ export const useTemplateTask = () => {
         // handlers
         focusTaskDraft,
         getAttributeTask,
+        getPlannedCount,
         getTaskById,
         handleAddTask,
         handleChangeTask,
