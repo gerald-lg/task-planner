@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { AlertTriangle, BadgeCheck, CircleAlert, OctagonX } from "lucide-react";
 
-import { useConfirmationModal } from "../../hooks";
+import { useConfirmationModal } from "@planner/components/shared/modal";
 import type { ConfirmationModalVariant } from "./types";
 
 const variantUi: Record<

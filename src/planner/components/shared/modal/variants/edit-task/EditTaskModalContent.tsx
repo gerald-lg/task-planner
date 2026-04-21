@@ -2,7 +2,7 @@ import { useState } from "react";
 import { colorClasses } from "@/planner/helpers/colors";
 import { dayColumns } from "@/planner/config";
 import { typesStates } from "@/planner/helpers";
-import { useEditTaskModal } from "../../hooks";
+import { useEditTaskModal } from "@planner/components/shared/modal";
 import { validateEditTaskForm } from "./validateEditTaskForm";
 
 export const EditTaskModalContent = () => {

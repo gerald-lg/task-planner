@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import type { ColorType } from "../../../models";
+import type { ColorType } from "@planner/models";
 
 type TaskCardContextValue = {
   id: string;
