@@ -2,14 +2,13 @@
 import { useEffect, useRef } from 'react';
 import { DragDropProvider } from '@dnd-kit/react';
 
-import { PlannerColumn } from './planner/components';
-import type { Day } from './planner/models';
-import { usePlannedTask, useTemplateTask } from './planner/hooks';
-import { dayColumns } from './planner/config';
+import { PlannerColumn, TaskPlannedCard, TaskTemplateCard, useToast } from '@planner/components';
+import { dayColumns } from '@planner/config';
+import { usePlannedTask, useTemplateTask } from '@planner/hooks';
+import type { Day } from '@planner/models';
 
 import './App.css'
-import { getMomentDay } from './planner/helpers/planner';
-import { TaskPlannedCard, TaskTemplateCard } from './planner/components';
+import { getMomentDay } from '@planner/helpers/planner';
 
 function App() {
 
@@ -38,6 +37,8 @@ function App() {
     onEditPlannedTask
   } = usePlannedTask();
 
+  const { show } = useToast();
+
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const greeting = `Good ${getMomentDay()}`;
 
@@ -51,6 +52,7 @@ function App() {
     if (plannedTask) {
       if (plannedTask.day !== targetId) {
         onMovePlannedTask(plannedTask, targetId as Day);
+        show("Task moved successfully", "success", { duration: 2000 });
       }
 
       return;
@@ -58,6 +60,7 @@ function App() {
 
     const newTask = createPlannedTask(taskId, targetId as Day);
     onAddPlannedTask(newTask);
+    show("Task added successfully", "success", { duration: 2000 });
   };
   
   useEffect(() => {
