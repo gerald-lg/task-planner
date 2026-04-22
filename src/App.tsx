@@ -1,16 +1,19 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DragDropProvider } from '@dnd-kit/react';
 
 import { PlannerColumn, TaskPlannedCard, TaskTemplateCard, useToast } from '@planner/components';
 import { dayColumns } from '@planner/config';
-import { usePlannedTask, useTemplateTask } from '@planner/hooks';
-import type { Day } from '@planner/models';
+import { useMomentDay, usePlannedTask, useTemplateTask } from '@planner/hooks';
+import type { Day, MomentDay } from '@planner/models';
 
 import './App.css'
-import { getMomentDay } from '@planner/helpers/planner';
+import { backgroundByMoment, momentDays } from '@planner/helpers/planner';
 
 function App() {
+  const momentDay = useMomentDay();
+  const [previewMomentDay, setPreviewMomentDay] = useState<MomentDay | null>(null);
+  const isDev = import.meta.env.DEV;
 
   const { 
     tasks, 
@@ -40,7 +43,9 @@ function App() {
   const { show } = useToast();
 
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
-  const greeting = `Good ${getMomentDay()}`;
+  const activeMomentDay = previewMomentDay ?? momentDay;
+  const appBackground = `linear-gradient(rgba(2, 6, 23, 0.28), rgba(2, 6, 23, 0.35)), ${backgroundByMoment[activeMomentDay]}`;
+  const greeting = `Good ${activeMomentDay}`;
 
   const handleDragEnd = (taskId: string, targetId?: string) => {
     if (!targetId || !dayColumns.some((column) => column.id === targetId)) {
@@ -68,10 +73,36 @@ function App() {
       inputRefs.current[pendingFocusID]?.focus();
       setPendingFocusID(null);
     }
-  }, [pendingFocusID])
+  }, [pendingFocusID, setPendingFocusID])
 
   return (
-    <div className="p-4">
+    <div className="min-h-screen p-4 transition-all duration-700" style={{ backgroundImage: appBackground }}>
+      {isDev && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white/20 p-3 backdrop-blur-sm">
+          <div className="text-left text-sm font-semibold text-white">
+            Background preview
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              className={`rounded-full px-3 py-1 text-sm font-medium transition ${previewMomentDay === null ? 'bg-white text-slate-900' : 'bg-white/20 text-white hover:bg-white/30'}`}
+              onClick={() => setPreviewMomentDay(null)}
+            >
+              Real time
+            </button>
+            {momentDays.map((day) => (
+              <button
+                key={day}
+                type="button"
+                className={`rounded-full px-3 py-1 text-sm font-medium capitalize transition ${previewMomentDay === day ? 'bg-white text-slate-900' : 'bg-white/20 text-white hover:bg-white/30'}`}
+                onClick={() => setPreviewMomentDay(day)}
+              >
+                {day}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <h1 className="text-2xl md:text-4xl font-bold mb-4 text-left">{greeting}</h1>
       <div className="flex flex-row gap-4">
         <DragDropProvider
