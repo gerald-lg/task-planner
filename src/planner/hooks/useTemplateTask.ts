@@ -1,12 +1,18 @@
 import { useMemo, useState, type SubmitEvent } from "react";
 import type { TaskTemplate } from "@planner/models";
-import { useStore } from "zustand";
 import { usePlannerStore } from "@planner/store/store";
 
 
 export const useTemplateTask = () => {
 
-    const { templateTasks : tasks, plannedTasks, addTaskDraft, changeTaskTitle, discardTask, saveTask, editTemplateTask, deleteTasksByTemplateId } = useStore(usePlannerStore);
+    const tasks = usePlannerStore((s) => s.templateTasks);
+    const plannedTasks = usePlannerStore((s) => s.plannedTasks);
+    const addTaskDraft = usePlannerStore((s) => s.addTaskDraft);
+    const changeTaskTitle = usePlannerStore((s) => s.changeTaskTitle);
+    const discardTask = usePlannerStore((s) => s.discardTask);
+    const saveTask = usePlannerStore((s) => s.saveTask);
+    const editTemplateTask = usePlannerStore((s) => s.editTemplateTask);
+    const deleteTasksByTemplateId = usePlannerStore((s) => s.deleteTasksByTemplateId);
     const [pendingFocusID, setPendingFocusID] = useState<string|null>(null);
 
     const handleAddTask = () => {
