@@ -32,7 +32,6 @@ export const EditTaskModalContent = () => {
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submitting form with data:", new FormData(e.currentTarget));
 
     const formData = new FormData(e.currentTarget);
     const result = validateEditTaskForm(formData, payload.kind);
