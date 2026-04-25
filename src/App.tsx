@@ -30,14 +30,14 @@ function App() {
     getPlannedCount,
   } = useTemplateTask();
 
-  const { 
+  const {
     plannedTasks,
     createPlannedTask,
-    onAddPlannedTask,
-    onMovePlannedTask,
-    onChangeStatePlannedTask,
-    onDeletePlannedTask,
-    onEditPlannedTask
+    addTask: addPlannedTask,
+    moveTask: movePlannedTask,
+    changeTaskState: changePlannedTaskState,
+    deleteTask: deletePlannedTask,
+    editPlannedTask,
   } = usePlannedTask();
 
   const { show } = useToast();
@@ -56,7 +56,7 @@ function App() {
 
     if (plannedTask) {
       if (plannedTask.day !== targetId) {
-        onMovePlannedTask(plannedTask, targetId as Day);
+        movePlannedTask(plannedTask.id, targetId as Day);
         show("Task moved successfully", "success", { duration: 2000 });
       }
 
@@ -64,7 +64,7 @@ function App() {
     }
 
     const newTask = createPlannedTask(taskId, targetId as Day);
-    onAddPlannedTask(newTask);
+    addPlannedTask(newTask);
     show("Task added successfully", "success", { duration: 2000 });
   };
   
@@ -169,9 +169,9 @@ function App() {
                         title={(getAttributeTask(task.templateId, "title") as string) || ""}
                         duration={(getAttributeTask(task.templateId, "duration") as number) || 0}
                         color={column.color}
-                        onChangeState={onChangeStatePlannedTask}
-                        onDelete={onDeletePlannedTask}
-                        onEdit={onEditPlannedTask}
+                        onChangeState={changePlannedTaskState}
+                        onDelete={deletePlannedTask}
+                        onEdit={editPlannedTask}
                       />
                     ))}
                 </PlannerColumn>
