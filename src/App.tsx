@@ -104,74 +104,82 @@ function App() {
         </div>
       )}
       <h1 className="text-2xl md:text-4xl font-bold mb-4 text-left">{greeting}</h1>
-      <div className="flex flex-row gap-4">
-        <DragDropProvider
-          onDragEnd={(event) => {
-            const { operation } = event;
-            const { source, target } = operation;
-            if (!source) {
-              return;
-            }
-            handleDragEnd(source.id as string, target?.id as string | undefined);
-          }}
-        >
-          <PlannerColumn
-            id="todo"
-            name="To Do" 
-            counter={tasks.length} 
-            color="sky" 
-            showAddButton={true}
-            handleAddTask={handleAddTask}
-            handleMouseDown={focusTaskDraft}
-          >
-            {tasks.map((task) => (
-              <TaskTemplateCard 
-                key={task.id}
-                id={task.id}
-                title={task.title}
-                duration={task.duration}
-                data={task}
-                color="sky"
-                onChange={handleChangeTask}
-                onBlur={handleOnBlurTask}
-                onSubmit={handleSubmitTask}
-                refInput={(el) => {
-                  inputRefs.current[task.id] = el;
-                }}
-                onEdit={handleEditTask}
-                onDelete={handleDeleteTask}
-                associatedPlannedCount={getPlannedCount(task.id)}
-              />
-            ))}
-          </PlannerColumn>
-
-          {
-            dayColumns.map((column) => (
-              <PlannerColumn
-                key={column.id}
-                id={column.id}
-                name={column.name}
-                counter={plannedTasks.filter((task) => task.day === column.id).length}
-                color={column.color}
-                showAddButton={false}
-              >
-                {plannedTasks.filter((task) => task.day === column.id).map((task) => (
-                  <TaskPlannedCard
-                    key={task.id}
-                    task={task}
-                    title={(getAttributeTask(task.templateId, "title") as string) || ""}
-                    duration={(getAttributeTask(task.templateId, "duration") as number) || 0}
-                    color={column.color}
-                    onChangeState={onChangeStatePlannedTask}
-                    onDelete={onDeletePlannedTask}
-                    onEdit={onEditPlannedTask}
-                  />
-                ))}
-              </PlannerColumn>
-            ))
+      <DragDropProvider
+        onDragEnd={(event) => {
+          const { operation } = event;
+          const { source, target } = operation;
+          if (!source) {
+            return;
           }
-        </DragDropProvider>
-      </div>
+          handleDragEnd(source.id as string, target?.id as string | undefined);
+        }}
+      >
+        <div className="flex flex-col lg:flex-row gap-4 items-start">
+          <div className="w-full lg:w-72 lg:shrink-0">
+            <PlannerColumn
+              id="todo"
+              name="To Do"
+              counter={tasks.length}
+              color="sky"
+              showAddButton={true}
+              handleAddTask={handleAddTask}
+              handleMouseDown={focusTaskDraft}
+              className="w-full"
+            >
+              {tasks.map((task) => (
+                <TaskTemplateCard
+                  key={task.id}
+                  id={task.id}
+                  title={task.title}
+                  duration={task.duration}
+                  data={task}
+                  color="sky"
+                  onChange={handleChangeTask}
+                  onBlur={handleOnBlurTask}
+                  onSubmit={handleSubmitTask}
+                  refInput={(el) => {
+                    inputRefs.current[task.id] = el;
+                  }}
+                  onEdit={handleEditTask}
+                  onDelete={handleDeleteTask}
+                  associatedPlannedCount={getPlannedCount(task.id)}
+                />
+              ))}
+            </PlannerColumn>
+          </div>
+
+          <div className="board-scroll w-full lg:flex-1 lg:overflow-x-auto lg:pb-2">
+            <div className="flex flex-col lg:flex-row gap-4 items-start lg:min-w-max">
+              {dayColumns.map((column) => (
+                <PlannerColumn
+                  key={column.id}
+                  id={column.id}
+                  name={column.name}
+                  counter={plannedTasks.filter((task) => task.day === column.id).length}
+                  color={column.color}
+                  showAddButton={false}
+                  className="w-full lg:w-72 lg:shrink-0"
+                >
+                  {plannedTasks
+                    .filter((task) => task.day === column.id)
+                    .map((task) => (
+                      <TaskPlannedCard
+                        key={task.id}
+                        task={task}
+                        title={(getAttributeTask(task.templateId, "title") as string) || ""}
+                        duration={(getAttributeTask(task.templateId, "duration") as number) || 0}
+                        color={column.color}
+                        onChangeState={onChangeStatePlannedTask}
+                        onDelete={onDeletePlannedTask}
+                        onEdit={onEditPlannedTask}
+                      />
+                    ))}
+                </PlannerColumn>
+              ))}
+            </div>
+          </div>
+        </div>
+      </DragDropProvider>
     </div>
   )
 }
