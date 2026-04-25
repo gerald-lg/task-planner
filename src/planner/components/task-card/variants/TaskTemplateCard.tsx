@@ -2,7 +2,7 @@ import type { Ref, SubmitEvent } from "react";
 import { Pencil, Trash } from "lucide-react";
 
 import type { ColorType, TaskTemplate } from "@planner/models";
-import { ConfirmationModalContent, EditTaskModalContent, Modal, useConfirmationModal, useEditTaskModal, type EditTaskModalPayload } from "@planner/components/shared/modal";
+import { useConfirmationModal, useEditTaskModal, type EditTaskModalPayload } from "@planner/components/shared/modal";
 import { TaskCard } from "../TaskCard";
 
 interface TaskTemplateCardProps {
@@ -40,7 +40,7 @@ const buildTemplateCardActions = (params: {
     ];
 };
 
-const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur, onSubmit, refInput, onEdit, onDelete, data, associatedPlannedCount }: TaskTemplateCardProps) => {
+export const TaskTemplateCard = ({ color, id, title, duration, onChange, onBlur, onSubmit, refInput, onEdit, onDelete, data, associatedPlannedCount }: TaskTemplateCardProps) => {
     const { openWith } = useEditTaskModal();
     const { openWith: openConfirmationWith } = useConfirmationModal();
 
@@ -51,7 +51,7 @@ const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur,
             data,
             onSubmit: onEdit,
         };
-        
+
         openWith(payload);
     };
 
@@ -69,7 +69,6 @@ const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur,
             cancelLabel: "Cancel",
             onConfirm: () => onDelete(id),
         });
-
     };
 
     const actions = buildTemplateCardActions({
@@ -78,41 +77,26 @@ const TaskTemplateCardContent = ({ color, id, title, duration, onChange, onBlur,
     });
 
     return (
-        <>
-            <TaskCard.Root color={color} key={id} id={id}>
-                <div className="text-white">
-                    <div className="flex flex-row items-start gap-1">
-                        <div className="min-w-0 flex-1">
-                            <TaskCard.InputTitle
-                                title={title}
-                                onChange={onChange}
-                                onSubmit={onSubmit}
-                                onBlur={onBlur}
-                                refInput={refInput}
-                            />
-                        </div>
-                        <div className="-mr-1 -mt-1 shrink-0 self-start">
-                            <TaskCard.Dropdown actions={actions} />
-                        </div>
+        <TaskCard.Root color={color} key={id} id={id}>
+            <div className="text-white">
+                <div className="flex flex-row items-start gap-1">
+                    <div className="min-w-0 flex-1">
+                        <TaskCard.InputTitle
+                            title={title}
+                            onChange={onChange}
+                            onSubmit={onSubmit}
+                            onBlur={onBlur}
+                            refInput={refInput}
+                        />
                     </div>
-                    <section className="flex flex-row items-center justify-end gap-2">
-                        <TaskCard.Duration duration={duration} />
-                    </section>
+                    <div className="-mr-1 -mt-1 shrink-0 self-start">
+                        <TaskCard.Dropdown actions={actions} />
+                    </div>
                 </div>
-            </TaskCard.Root>
-
-            <Modal.Content>
-                <EditTaskModalContent />
-                <ConfirmationModalContent />
-            </Modal.Content>
-        </>
-    );
-};
-
-export const TaskTemplateCard = (props: TaskTemplateCardProps) => {
-    return (
-        <Modal.Root>
-            <TaskTemplateCardContent {...props} />
-        </Modal.Root>
+                <section className="flex flex-row items-center justify-end gap-2">
+                    <TaskCard.Duration duration={duration} />
+                </section>
+            </div>
+        </TaskCard.Root>
     );
 };
