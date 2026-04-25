@@ -166,8 +166,8 @@ function App() {
                       <TaskPlannedCard
                         key={task.id}
                         task={task}
-                        title={(getAttributeTask(task.templateId, "title") as string) || ""}
-                        duration={(getAttributeTask(task.templateId, "duration") as number) || 0}
+                        title={getAttributeTask(task.templateId, "title") ?? ""}
+                        duration={getAttributeTask(task.templateId, "duration") ?? 0}
                         color={column.color}
                         onChangeState={changePlannedTaskState}
                         onDelete={deletePlannedTask}

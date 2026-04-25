@@ -68,7 +68,10 @@ export const useTemplateTask = () => {
         return tasks.find((task) => task.id === id) || null;
     }
 
-    const getAttributeTask = (id: string, attribute: keyof TaskTemplate) => {
+    const getAttributeTask = <K extends keyof TaskTemplate>(
+        id: string,
+        attribute: K,
+    ): TaskTemplate[K] | null => {
         const task = getTaskById(id);
         return task ? task[attribute] : null;
     }
