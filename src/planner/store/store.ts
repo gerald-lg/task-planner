@@ -18,6 +18,13 @@ export const usePlannerStore = create<PlannerStore>()(
 		}),
 		{
 			name: "planner-store",
+			version: 1,
+			onRehydrateStorage: () => (_state, error) => {
+				if (error) {
+					// eslint-disable-next-line no-console
+					console.error("[planner-store] rehydration failed:", error);
+				}
+			},
 			partialize: (state) => ({
 				templateTasks: state.templateTasks,
 				plannedTasks: state.plannedTasks,
