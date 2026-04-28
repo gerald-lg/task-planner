@@ -2,7 +2,6 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2023",
-    "baseUrl": ".",
     "useDefineForClassFields": true,
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
@@ -21,13 +20,13 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@planner/*": ["src/planner/*"]
+      "@/*": ["./src/*"],
+      "@planner/*": ["./src/planner/*"]
     }
   },
   "include": ["src"]
