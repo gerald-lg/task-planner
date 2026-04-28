@@ -1,2 +1,3 @@
 export * from "./colors";
-export * from "./states"
+export * from "./generateId";
+export * from "./states";
