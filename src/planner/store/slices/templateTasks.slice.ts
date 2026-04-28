@@ -11,12 +11,7 @@ export interface TemplateTasksSlice {
     editTemplateTask: (id: string, values: Partial<TaskTemplate>) => void;
 }
 
-const initialTasks: TaskTemplate[] = [
-  { id: '1', title: 'Task 1', duration: 30, isDraft: false },
-  { id: '2', title: 'Task 2', duration: 45, isDraft: false },
-  { id: '3', title: 'Task 3', duration: 60, isDraft: false },
-  { id: '4', title: 'Task 4', duration: 15, isDraft: false },
-];
+const initialTasks: TaskTemplate[] = [];
 
 export const createTemplateTasksSlice : StateCreator<TemplateTasksSlice> = (set) => ({
     templateTasks: initialTasks,
