@@ -1,5 +1,6 @@
 import { useMemo, useState, type SubmitEvent } from "react";
 import type { TaskTemplate } from "@planner/models";
+import { generateId } from "@planner/helpers";
 import { usePlannerStore } from "@planner/store/store";
 
 
@@ -16,7 +17,7 @@ export const useTemplateTask = () => {
     const [pendingFocusID, setPendingFocusID] = useState<string|null>(null);
 
     const handleAddTask = () => {
-        const id = crypto.randomUUID();
+        const id = generateId();
         addTaskDraft(id);
         setPendingFocusID(id);
     }
