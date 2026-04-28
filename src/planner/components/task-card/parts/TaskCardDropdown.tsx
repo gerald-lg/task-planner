@@ -1,5 +1,6 @@
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 import { colorClasses } from "@planner/helpers";
 import { useDropdownButton } from "@planner/hooks/useDropdownButton";
@@ -17,21 +18,52 @@ interface TaskCardDropdownProps {
     actions: MenuAction[];
 }
 
+const MENU_WIDTH = 200; 
+const MENU_GAP = 4;
+
 export const TaskCardDropdown = ({ actions }: TaskCardDropdownProps) => {
     const { id, color } = useTaskCardContext();
 
-    const menuColorClass = color ? colorClasses[color].section : "bg-slate-950/95";
+    const menuColorClass = color ? colorClasses[color].dropdown : "bg-slate-950/95";
 
-    const { close, containerRef, isOpen, toggle } = useDropdownButton(id);
-    
+    const { close, containerRef, menuRef, isOpen, toggle } = useDropdownButton(id);
+    const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+
     const buttonId = `${id}-task-card-menu-button`;
     const menuId = `${id}-task-card-menu`;
 
-    const handleActionClick = (action: MenuAction) => {
-        if (action.disabled) {
-            return;
-        }
+    useEffect(() => {
+        if (!isOpen || !containerRef.current) return;
 
+        const updatePosition = () => {
+            const rect = containerRef.current?.getBoundingClientRect();
+            if (!rect) return;
+
+            const left = Math.max(
+                8,
+                Math.min(
+                    rect.right - MENU_WIDTH,
+                    window.innerWidth - MENU_WIDTH - 8,
+                ),
+            );
+            setPosition({
+                top: rect.bottom + MENU_GAP,
+                left,
+            });
+        };
+
+        updatePosition();
+        window.addEventListener("scroll", updatePosition, true);
+        window.addEventListener("resize", updatePosition);
+
+        return () => {
+            window.removeEventListener("scroll", updatePosition, true);
+            window.removeEventListener("resize", updatePosition);
+        };
+    }, [isOpen, containerRef]);
+
+    const handleActionClick = (action: MenuAction) => {
+        if (action.disabled) return;
         action.onClick();
         close();
     };
@@ -60,32 +92,37 @@ export const TaskCardDropdown = ({ actions }: TaskCardDropdownProps) => {
                 </svg>
             </button>
 
-            {isOpen ? (
-                <div
-                    id={menuId}
-                    role="menu"
-                    aria-labelledby={buttonId}
-                    className={`absolute left-0 top-full z-10 mt-1 w-44 rounded-md border border-white/15 ${menuColorClass} p-1 shadow-lg`}
-                    onPointerDown={(event) => event.stopPropagation()}
-                >
-                    <ul className="text-sm font-medium text-white">
-                        {actions.map((action) => (
-                            <li key={action.id}>
-                                <button
-                                    type="button"
-                                    role="menuitem"
-                                    onClick={() => handleActionClick(action)}
-                                    disabled={action.disabled}
-                                    className="inline-flex w-full items-center rounded-md px-3 py-2 text-left transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
-                                >
-                                    {action.icon}
-                                    {action.label}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ) : null}
+            {isOpen && position
+                ? createPortal(
+                      <div
+                          id={menuId}
+                          ref={menuRef}
+                          role="menu"
+                          aria-labelledby={buttonId}
+                          className={`fixed z-50 w-44 rounded-md border border-white/15 ${menuColorClass} p-1 shadow-lg`}
+                          style={{ top: position.top, left: position.left }}
+                          onPointerDown={(event) => event.stopPropagation()}
+                      >
+                          <ul className="text-sm font-medium text-white">
+                              {actions.map((action) => (
+                                  <li key={action.id}>
+                                      <button
+                                          type="button"
+                                          role="menuitem"
+                                          onClick={() => handleActionClick(action)}
+                                          disabled={action.disabled}
+                                          className="inline-flex w-full items-center rounded-md px-3 py-2 text-left transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+                                      >
+                                          {action.icon}
+                                          {action.label}
+                                      </button>
+                                  </li>
+                              ))}
+                          </ul>
+                      </div>,
+                      document.body,
+                  )
+                : null}
         </div>
     );
 };
