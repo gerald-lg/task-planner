@@ -20,10 +20,11 @@ export const TaskCardInputTitle = ({ refInput, title, onChange, onBlur, onSubmit
             name="title"
             type="text"
             placeholder="Enter title..."
-            className="text-md font-semibold text-white w-full placeholder:text-gray-100 focus:outline-none bg-transparent text-ellipsis whitespace-nowrap overflow-hidden"
+            className="text-md font-semibold text-white w-full placeholder:text-gray-100 focus:outline-none bg-transparent text-ellipsis whitespace-nowrap overflow-hidden touch-auto"
             value={title}
             onChange={(e) => onChange(e.target.value, id)}
             onBlur={(e) => onBlur(e.target.value, id)}
+            onPointerDown={(e) => e.stopPropagation()}
         />
     </form>
   )
