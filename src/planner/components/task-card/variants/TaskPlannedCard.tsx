@@ -1,7 +1,7 @@
 import type { ColorType, PlannedTask } from "@planner/models"
 
 import { TaskCard } from ".."
-import { Pencil, Trash } from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil, Trash } from "lucide-react";
 import { useEditTaskModal, type EditTaskModalPayload } from "@planner/components/shared/modal";
 
 interface TaskPlannedCardProps {
@@ -9,13 +9,41 @@ interface TaskPlannedCardProps {
   task: PlannedTask;
   title: string;
   duration: number;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
   onChangeState: (id: string) => void;
   onDelete: (id: string) => void;
   onEdit: (id: string, values: Partial<PlannedTask>) => void;
 }
 
-const buildPlannedCardActions = (params: { id: string; onDelete: (id: string) => void; onEditModal: () => void }) => {
+type BuildActionsParams = {
+  id: string;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  onDelete: (id: string) => void;
+  onEditModal: () => void;
+};
+
+const buildPlannedCardActions = (params: BuildActionsParams) => {
   return [
+      {
+          id: "move-up",
+          label: "Subir",
+          icon: <ChevronUp className="mr-2 h-4 w-4" aria-hidden="true" />,
+          onClick: params.onMoveUp,
+          disabled: !params.canMoveUp,
+      },
+      {
+          id: "move-down",
+          label: "Bajar",
+          icon: <ChevronDown className="mr-2 h-4 w-4" aria-hidden="true" />,
+          onClick: params.onMoveDown,
+          disabled: !params.canMoveDown,
+      },
       {
           id: "edit",
           label: "Edit",
@@ -31,7 +59,19 @@ const buildPlannedCardActions = (params: { id: string; onDelete: (id: string) =>
   ];
 }
 
-export const TaskPlannedCard = ({color, task, title, duration, onChangeState, onDelete, onEdit }: TaskPlannedCardProps) => {
+export const TaskPlannedCard = ({
+  color,
+  task,
+  title,
+  duration,
+  canMoveUp,
+  canMoveDown,
+  onMoveUp,
+  onMoveDown,
+  onChangeState,
+  onDelete,
+  onEdit,
+}: TaskPlannedCardProps) => {
 
   const { openWith } = useEditTaskModal();
 
@@ -47,6 +87,10 @@ export const TaskPlannedCard = ({color, task, title, duration, onChangeState, on
 
   const actions = buildPlannedCardActions({
       id: task.id,
+      canMoveUp,
+      canMoveDown,
+      onMoveUp,
+      onMoveDown,
       onDelete,
       onEditModal: handleEditClick,
   });
