@@ -69,7 +69,7 @@ export const PlannerColumn = ({
           </button>
         )}
       </div>
-      <section className="flex flex-col gap-3 p-2">{children}</section>
+      <section className="flex flex-col gap-4 p-2 min-h-[120px]">{children}</section>
     </section>
   );
 };
