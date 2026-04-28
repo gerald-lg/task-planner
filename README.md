@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+# Task Planner `v0.1.0`
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una aplicación web para organizar tareas a lo largo de la semana. Permite crear plantillas de tareas, planificarlas en días específicos, cambiar su estado y reordenarlas mediante drag & drop.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Plantillas de tareas** — crea tareas reutilizables en la columna "To Do" con título, duración y color.
+- **Planificación semanal** — arrastra tareas a cualquiera de los 7 días (lunes a domingo), cada uno con su propio color.
+- **Estados de tarea** — ciclo de tres estados: `todo` → `in-progress` → `done`.
+- **Reordenamiento** — reordena tareas dentro de un día con los botones subir/bajar.
+- **Notas por tarea** — añade una nota opcional a cada tarea planificada.
+- **Edición inline** — edita el título de una plantilla directamente desde la tarjeta.
+- **Fondo dinámico** — el fondo de la app cambia según el momento del día (mañana, tarde, noche).
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Tecnología | Uso |
+|---|---|
+| React 19 | UI |
+| TypeScript | Tipado estático |
+| Zustand | Estado global |
+| @dnd-kit/react | Drag & drop |
+| Tailwind CSS 3 | Estilos |
+| Vite | Bundler |
 
-## Expanding the ESLint configuration
+## Estructura del proyecto
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/planner/
+├── components/     # Componentes UI (columnas, tarjetas, modales, toasts)
+├── config/         # Configuración de columnas de días
+├── helpers/        # Utilidades (colores, estados, generación de IDs)
+├── hooks/          # Hooks de dominio (usePlannedTask, useTemplateTask, ...)
+├── models/         # Tipos e interfaces (PlannedTask, TaskTemplate, Day, ...)
+└── store/          # Store Zustand con slices de tareas
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Comandos
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Instalar dependencias
+bun install
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Servidor de desarrollo
+bun run dev
+
+# Build de producción
+bun run build
+
+# Lint
+bun run lint
 ```
