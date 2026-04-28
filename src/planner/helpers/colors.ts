@@ -5,6 +5,7 @@ export const colorClasses = {
         card: "bg-amber-800/55",
         buttonPrimary: "bg-amber-600 hover:bg-amber-700",
         buttonSecondary: "border-amber-300/70 hover:bg-amber-800/70",
+        dropdown: "bg-amber-900",
     },
     blue: {
         section: "bg-blue-900/45",
@@ -12,6 +13,7 @@ export const colorClasses = {
         card: "bg-blue-800/55",
         buttonPrimary: "bg-blue-600 hover:bg-blue-700",
         buttonSecondary: "border-blue-300/70 hover:bg-blue-800/70",
+        dropdown: "bg-blue-900",
     },
     cyan: {
         section: "bg-cyan-900/45",
@@ -19,6 +21,7 @@ export const colorClasses = {
         card: "bg-cyan-800/55",
         buttonPrimary: "bg-cyan-600 hover:bg-cyan-700",
         buttonSecondary: "border-cyan-300/70 hover:bg-cyan-800/70",
+        dropdown: "bg-cyan-900",
     },
     emerald: {
         section: "bg-emerald-900/45",
@@ -26,6 +29,7 @@ export const colorClasses = {
         card: "bg-emerald-800/55",
         buttonPrimary: "bg-emerald-600 hover:bg-emerald-700",
         buttonSecondary: "border-emerald-300/70 hover:bg-emerald-800/70",
+        dropdown: "bg-emerald-900",
     },
     green: {
         section: "bg-green-900/45",
@@ -33,6 +37,7 @@ export const colorClasses = {
         card: "bg-green-800/55",
         buttonPrimary: "bg-green-600 hover:bg-green-700",
         buttonSecondary: "border-green-300/70 hover:bg-green-800/70",
+        dropdown: "bg-green-900",
     },
     indigo: {
         section: "bg-indigo-900/45",
@@ -40,6 +45,7 @@ export const colorClasses = {
         card: "bg-indigo-800/55",
         buttonPrimary: "bg-indigo-600 hover:bg-indigo-700",
         buttonSecondary: "border-indigo-300/70 hover:bg-indigo-800/70",
+        dropdown: "bg-indigo-900",
     },
     lime: {
         section: "bg-lime-900/45",
@@ -47,6 +53,7 @@ export const colorClasses = {
         card: "bg-lime-800/55",
         buttonPrimary: "bg-lime-600 hover:bg-lime-700",
         buttonSecondary: "border-lime-300/70 hover:bg-lime-800/70",
+        dropdown: "bg-lime-900",
     },
     orange: {
         section: "bg-orange-900/45",
@@ -54,6 +61,7 @@ export const colorClasses = {
         card: "bg-orange-800/55",
         buttonPrimary: "bg-orange-600 hover:bg-orange-700",
         buttonSecondary: "border-orange-300/70 hover:bg-orange-800/70",
+        dropdown: "bg-orange-900",
     },
     red: {
         section: "bg-red-900/45",
@@ -61,6 +69,7 @@ export const colorClasses = {
         card: "bg-red-800/55",
         buttonPrimary: "bg-red-600 hover:bg-red-700",
         buttonSecondary: "border-red-300/70 hover:bg-red-800/70",
+        dropdown: "bg-red-900",
     },
     rose: {
         section: "bg-rose-900/45",
@@ -68,6 +77,7 @@ export const colorClasses = {
         card: "bg-rose-800/55",
         buttonPrimary: "bg-rose-600 hover:bg-rose-700",
         buttonSecondary: "border-rose-300/70 hover:bg-rose-800/70",
+        dropdown: "bg-rose-900",
     },
     yellow: {
         section: "bg-yellow-900/45",
@@ -75,6 +85,7 @@ export const colorClasses = {
         card: "bg-yellow-800/55",
         buttonPrimary: "bg-yellow-600 hover:bg-yellow-700",
         buttonSecondary: "border-yellow-300/70 hover:bg-yellow-800/70",
+        dropdown: "bg-yellow-900",
     },
     transparent: {
         section: "bg-transparent",
@@ -82,6 +93,7 @@ export const colorClasses = {
         card: "bg-transparent",
         buttonPrimary: "bg-transparent hover:bg-white/10",
         buttonSecondary: "border-white/30 hover:bg-white/10",
+        dropdown: "bg-slate-950/95",
     },
     sky: {
         section: "bg-sky-900/45",
@@ -89,5 +101,6 @@ export const colorClasses = {
         card: "bg-sky-800/55",
         buttonPrimary: "bg-sky-600 hover:bg-sky-700",
         buttonSecondary: "border-sky-300/70 hover:bg-sky-800/70",
+        dropdown: "bg-sky-900",
     }
 } as const;
