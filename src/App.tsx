@@ -131,25 +131,36 @@ function App() {
                   handleMouseDown={focusTaskDraft}
                   className="w-full"
                 >
-                  {tasks.map((task) => (
-                    <TaskTemplateCard
-                      key={task.id}
-                      id={task.id}
-                      title={task.title}
-                      duration={task.duration}
-                      data={task}
-                      color="sky"
-                      onChange={handleChangeTask}
-                      onBlur={handleOnBlurTask}
-                      onSubmit={handleSubmitTask}
-                      refInput={(el) => {
-                        inputRefs.current[task.id] = el;
-                      }}
-                      onEdit={handleEditTask}
-                      onDelete={handleDeleteTask}
-                      associatedPlannedCount={getPlannedCount(task.id)}
-                    />
-                  ))}
+                  {
+                    tasks.length === 0 && (
+                      <div className="text-sm text-white/70 italic text-center px-2">
+                        No tasks yet.
+                        <br />
+                        Click the <span className="font-semibold">+</span> button to create your first task.
+                      </div>
+                    )
+                  }
+                  {
+                    tasks.map((task) => (
+                      <TaskTemplateCard
+                        key={task.id}
+                        id={task.id}
+                        title={task.title}
+                        duration={task.duration}
+                        data={task}
+                        color="sky"
+                        onChange={handleChangeTask}
+                        onBlur={handleOnBlurTask}
+                        onSubmit={handleSubmitTask}
+                        refInput={(el) => {
+                          inputRefs.current[task.id] = el;
+                        }}
+                        onEdit={handleEditTask}
+                        onDelete={handleDeleteTask}
+                        associatedPlannedCount={getPlannedCount(task.id)}
+                      />
+                    ))
+                  }
                 </PlannerColumn>
               </div>
 
@@ -169,6 +180,16 @@ function App() {
                         const dayTasks = plannedTasks
                           .filter((task) => task.day === column.id)
                           .sort((a, b) => a.order - b.order);
+
+                        if (dayTasks.length === 0) {
+                          return (
+                            <div className="text-sm text-white/70 italic text-center px-2">
+                              No tasks planned yet.
+                              <br />
+                              Drag one from <span className="font-semibold">To Do</span> to get started.
+                            </div>
+                          );
+                        }
 
                         return dayTasks.map((task, index) => {
                           const previousId = index > 0 ? dayTasks[index - 1].id : null;
