@@ -1,8 +1,9 @@
-import { ToastCloseButton, ToastIcon, ToastMessage, useToastContext } from "../../parts";
+import { useToast } from "../../hooks";
+import { ToastCloseButton, ToastIcon, ToastMessage } from "../../parts";
 import { defaultToastVariantConfig } from "./config";
 
 export const DefaultToastContent = () => {
-  const { toast } = useToastContext();
+  const { toast } = useToast();
 
   if (!toast) return null;
 

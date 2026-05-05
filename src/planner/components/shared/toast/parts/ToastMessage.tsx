@@ -1,11 +1,11 @@
-import { useToastContext } from "./ToastContext";
+import { useToast } from "../hooks";
 
 type ToastMessageProps = {
   className?: string;
 };
 
 export const ToastMessage = ({ className }: ToastMessageProps) => {
-  const { toast } = useToastContext();
+  const { toast } = useToast();
 
   if (!toast) return null;
 

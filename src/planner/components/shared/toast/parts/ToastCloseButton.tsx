@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useToastContext } from "./ToastContext";
+import { useToast } from "../hooks";
 
 type ToastCloseButtonProps = {
     className?: string;
@@ -8,7 +8,7 @@ type ToastCloseButtonProps = {
 
 export const ToastCloseButton = ({className, ariaLabel = "Close toast" }: ToastCloseButtonProps) => {
 
-    const { hide } = useToastContext();
+    const { hide } = useToast();
 
     return (
         <button
