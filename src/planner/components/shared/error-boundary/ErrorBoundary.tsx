@@ -4,12 +4,7 @@ import { ErrorFallback } from "./ErrorFallback";
 
 type ErrorBoundaryProps = {
     children: ReactNode;
-    /**
-     * Render prop opcional para personalizar la UI del fallback.
-     * Recibe el error y una función `reset` que vuelve a intentar renderizar `children`.
-     */
     fallback?: (params: { error: Error; reset: () => void }) => ReactNode;
-    /** Hook opcional para reportar errores a un servicio externo. */
     onError?: (error: Error, info: ErrorInfo) => void;
 };
 
@@ -25,8 +20,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     }
 
     componentDidCatch(error: Error, info: ErrorInfo) {
-        // En dev queda visible en consola; en prod conviene enchufar un reporter.
-        // eslint-disable-next-line no-console
         console.error("[ErrorBoundary]", error, info);
         this.props.onError?.(error, info);
     }

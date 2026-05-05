@@ -1,10 +1,3 @@
-/**
- * Genera un UUID v4.
- *
- * Usa `crypto.randomUUID()` cuando está disponible (HTTPS / localhost).
- * En contextos HTTP locales (ej. red interna durante desarrollo) cae en
- * una implementación manual con `crypto.getRandomValues`
- */
 export const generateId = (): string => {
     if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
         return crypto.randomUUID();

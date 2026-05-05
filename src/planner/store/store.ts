@@ -21,7 +21,6 @@ export const usePlannerStore = create<PlannerStore>()(
 			version: 1,
 			onRehydrateStorage: () => (_state, error) => {
 				if (error) {
-					// eslint-disable-next-line no-console
 					console.error("[planner-store] rehydration failed:", error);
 				}
 			},
