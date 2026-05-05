@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ToastProvider } from "./ToastContext";
 import type { ShowToastOptions, ToastState, VariantToast } from "../types";
 import { DefaultToastContent } from "../variants";
@@ -13,20 +13,21 @@ export const ToastRoot = ({ children }: ToastRootProps) => {
     const [toast, setToast] = useState<ToastState>(null);
     const timeoutRef = useRef<number | null>(null);
 
-    const clearAutoHideTimeout = () => {
-        if (timeoutRef.current) {
+    const clearAutoHideTimeout = useCallback(() => {
+        if (timeoutRef.current !== null) {
             window.clearTimeout(timeoutRef.current);
             timeoutRef.current = null;
         }
-    };
+    }, []);
 
-    const hide = () => {
+    const hide = useCallback(() => {
         clearAutoHideTimeout();
         setToast(null);
-    };
+    }, [clearAutoHideTimeout]);
 
-    const show = (message: string, variant: VariantToast, options?: ShowToastOptions) => {
+    const show = useCallback((message: string, variant: VariantToast, options?: ShowToastOptions) => {
         clearAutoHideTimeout();
+        
         setToast({
             message,
             variant,
@@ -41,11 +42,11 @@ export const ToastRoot = ({ children }: ToastRootProps) => {
                 timeoutRef.current = null;
             }, duration);
         }
-    };
+    }, [clearAutoHideTimeout]);
 
     useEffect(() => {
         return () => clearAutoHideTimeout();
-    }, []);
+    }, [clearAutoHideTimeout]);
 
     const contextValue = useMemo(
         () => ({
@@ -53,7 +54,7 @@ export const ToastRoot = ({ children }: ToastRootProps) => {
             show,
             hide,
         }),
-        [toast],
+        [toast, show, hide],
     );
 
     const toastContentByKind = {
