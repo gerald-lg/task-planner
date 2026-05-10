@@ -16,10 +16,6 @@ export const BackgroundPreview = React.memo<BackgroundPreviewProps>(({ previewMo
         return null;
     }
 
-    const changePreview = (day: MomentDay | null) => {
-        setPreviewMomentDay(day);
-    }
-
     return (
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white/20 p-3 backdrop-blur-sm">
             <div className="text-left text-sm font-semibold text-white">
@@ -29,7 +25,7 @@ export const BackgroundPreview = React.memo<BackgroundPreviewProps>(({ previewMo
             <button
                 type="button"
                 className={`rounded-full px-3 py-1 text-sm font-medium transition ${previewMomentDay === null ? 'bg-white text-slate-900' : 'bg-white/20 text-white hover:bg-white/30'}`}
-                onClick={() => changePreview(null)}
+                onClick={() => setPreviewMomentDay(null)}
             >
                 Real time
             </button>
