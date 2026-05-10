@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { DragDropProvider } from '@dnd-kit/react';
 
-import { BackgroundPreview, ErrorBoundary, PlannerColumn, TaskPlannedCard, TaskTemplateCard, useToast } from '@planner/components';
+import { BackgroundPreview, ErrorBoundary, PlannerColumn, TaskTemplateCard, useToast } from '@planner/components';
 import { dayColumns } from '@planner/config';
 import { useMomentDay, usePlannedTask, useTemplateTask } from '@planner/hooks';
 import type { Day, MomentDay } from '@planner/models';
@@ -10,6 +10,7 @@ import { ConfirmationModalContent, EditTaskModalContent, Modal } from '@planner/
 
 import './App.css'
 import { backgroundByMoment } from '@planner/helpers/planner';
+import { DayColumn } from './planner/components/day';
 
 function App() {
   const momentDay = useMomentDay();
@@ -141,60 +142,7 @@ function App() {
               <div className="board-scroll w-full lg:flex-1 lg:overflow-x-auto lg:pb-2">
                 <div className="flex flex-col lg:flex-row gap-4 items-start lg:min-w-max">
                   {dayColumns.map((column) => (
-                    <PlannerColumn
-                      key={column.id}
-                      id={column.id}
-                      name={column.name}
-                      counter={plannedTasks.filter((task) => task.day === column.id).length}
-                      color={column.color}
-                      showAddButton={false}
-                      className="w-full lg:w-72 lg:shrink-0"
-                    >
-                      {(() => {
-                        const dayTasks = plannedTasks
-                          .filter((task) => task.day === column.id)
-                          .sort((a, b) => a.order - b.order);
-
-                        if (dayTasks.length === 0) {
-                          return (
-                            <div className="text-sm text-white/70 italic text-center px-2">
-                              No tasks planned yet.
-                              <br />
-                              Drag one from <span className="font-semibold">To Do</span> to get started.
-                            </div>
-                          );
-                        }
-
-                        return dayTasks.map((task, index) => {
-                          const previousId = index > 0 ? dayTasks[index - 1].id : null;
-                          const nextId =
-                            index < dayTasks.length - 1
-                              ? dayTasks[index + 1].id
-                              : null;
-
-                          return (
-                            <TaskPlannedCard
-                              key={task.id}
-                              task={task}
-                              title={getAttributeTask(task.templateId, "title") ?? ""}
-                              duration={getAttributeTask(task.templateId, "duration") ?? 0}
-                              color={column.color}
-                              canMoveUp={previousId !== null}
-                              canMoveDown={nextId !== null}
-                              onMoveUp={() => {
-                                if (previousId) reorderPlannedTask(task.id, previousId);
-                              }}
-                              onMoveDown={() => {
-                                if (nextId) reorderPlannedTask(task.id, nextId);
-                              }}
-                              onChangeState={changePlannedTaskState}
-                              onDelete={deletePlannedTask}
-                              onEdit={editPlannedTask}
-                            />
-                          );
-                        });
-                      })()}
-                    </PlannerColumn>
+                    <DayColumn key={column.id} day={column.id} />
                   ))}
                 </div>
               </div>
