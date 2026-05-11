@@ -11,12 +11,12 @@ interface TaskTemplateCardProps {
     title: string;
     duration?: number;
     data: TaskTemplate;
-    onChange: (id: string, value: string) => void;
-    onBlur: (id: string, value: string) => void;
-    onSubmit: (e: SubmitEvent<HTMLFormElement>, id: string) => void;
+    onChange: (value: string) => void;
+    onBlur: (value: string) => void;
+    onSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
     refInput: Ref<HTMLInputElement>;
-    onEdit: (id: string, values: Partial<TaskTemplate>) => void;
-    onDelete: (id: string) => void;
+    onEdit: (values: Partial<TaskTemplate>) => void;
+    onDelete: () => void;
     associatedPlannedCount: number;
 }
 
@@ -67,7 +67,7 @@ export const TaskTemplateCard = ({ color, id, title, duration, onChange, onBlur,
             description,
             confirmLabel: "Delete",
             cancelLabel: "Cancel",
-            onConfirm: () => onDelete(id),
+            onConfirm: onDelete,
         });
     };
 

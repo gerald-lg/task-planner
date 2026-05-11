@@ -1,4 +1,4 @@
-import type { ColorType } from "@/planner/models";
+import type { ColorType, PlannedTask as PlannedTaskType } from "@/planner/models";
 import { TaskPlannedCard } from "../task-card";
 import { usePlannerStore } from "@/planner/store/store";
 import { memo } from "react";
@@ -32,6 +32,10 @@ export const PlannedTask = memo(({ id, previousId, nextId, color }: PlannedTaskP
         }
     };
 
+    const handleEditPlannedTask = (values: Partial<PlannedTaskType>) => {
+        editPlannedTask(id, values);
+    }
+
     if(!task || !templateTask) return null;
 
     return (
@@ -46,7 +50,7 @@ export const PlannedTask = memo(({ id, previousId, nextId, color }: PlannedTaskP
             onMoveDown={onMoveDown}
             onChangeState={changePlannedTaskState}
             onDelete={deletePlannedTask}
-            onEdit={editPlannedTask}
+            onEdit={handleEditPlannedTask}
         />
     )
 })

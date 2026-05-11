@@ -43,7 +43,7 @@ export const EditTaskModalContent = () => {
 
     setErrors({});
 
-    payload.onSubmit(payload.data.id, result.data);
+    payload.onSubmit(result.data);
     close();
   };
 

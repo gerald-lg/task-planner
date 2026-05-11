@@ -15,7 +15,7 @@ interface TaskPlannedCardProps {
   onMoveDown: () => void;
   onChangeState: (id: string) => void;
   onDelete: (id: string) => void;
-  onEdit: (id: string, values: Partial<PlannedTask>) => void;
+  onEdit: (values: Partial<PlannedTask>) => void;
 }
 
 type BuildActionsParams = {
