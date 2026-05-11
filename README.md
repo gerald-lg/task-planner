@@ -30,7 +30,7 @@ src/planner/
 ├── components/     # Componentes UI (columnas, tarjetas, modales, toasts)
 ├── config/         # Configuración de columnas de días
 ├── helpers/        # Utilidades (colores, estados, generación de IDs)
-├── hooks/          # Hooks de dominio (usePlannedTask, useTemplateTask, ...)
+├── hooks/          # Hooks de dominio (useDragEnd, ...)
 ├── models/         # Tipos e interfaces (PlannedTask, TaskTemplate, Day, ...)
 └── store/          # Store Zustand con slices de tareas
 ```
