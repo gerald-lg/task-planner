@@ -1,18 +1,17 @@
 import { X } from "lucide-react";
-import { useToast } from "../hooks";
 
 type ToastCloseButtonProps = {
     className?: string;
     ariaLabel?: string;
+    onClose: () => void;
 };
 
-export const ToastCloseButton = ({className, ariaLabel = "Close toast" }: ToastCloseButtonProps) => {
+export const ToastCloseButton = ({className, ariaLabel = "Close toast", onClose }: ToastCloseButtonProps) => {
 
-    const { hide } = useToast();
 
     return (
         <button
-            onClick={hide}
+            onClick={onClose}
             type="button"
             aria-label={ariaLabel}
             className={className}

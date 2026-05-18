@@ -1,13 +1,10 @@
-import { useToast } from "../hooks";
-
 type ToastMessageProps = {
   className?: string;
+  message: string;
 };
 
-export const ToastMessage = ({ className }: ToastMessageProps) => {
-  const { toast } = useToast();
+export const ToastMessage = ({ className, message }: ToastMessageProps) => {
 
-  if (!toast) return null;
 
-  return <div className={className}>{toast.message}</div>;
+  return <div className={className}>{message}</div>;
 };

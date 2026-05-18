@@ -4,17 +4,20 @@ import { persist } from "zustand/middleware";
 import {
 	createPlannedTasksSlice,
 	createTemplateTasksSlice,
+	createToastSlice,
 	type PlannedTaskSlice,
 	type TemplateTasksSlice,
+	type ToastSlice,
 } from "./slices";
 
-export type PlannerStore = TemplateTasksSlice & PlannedTaskSlice;
+export type PlannerStore = TemplateTasksSlice & PlannedTaskSlice & ToastSlice;
 
 export const usePlannerStore = create<PlannerStore>()(
 	persist(
 		(...a) => ({
 			...createTemplateTasksSlice(...a),
 			...createPlannedTasksSlice(...a),
+			...createToastSlice(...a)
 		}),
 		{
 			name: "planner-store",

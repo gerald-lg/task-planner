@@ -1,7 +1,6 @@
-import { ToastCloseButton, ToastIcon, ToastMessage, ToastRoot } from "./parts";
+import { ToastCloseButton, ToastIcon, ToastMessage } from "./parts";
 
 export const Toast = {
-    Root: ToastRoot,
     Message: ToastMessage,
     Icon: ToastIcon,
     CloseButton: ToastCloseButton,

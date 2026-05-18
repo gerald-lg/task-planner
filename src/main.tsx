@@ -1,13 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+
 import App from '@/App.tsx'
-import { Toast } from '@planner/components'
+import { ToastDisplay } from './planner/components/shared/toast/parts'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Toast.Root>
-      <App />
-    </Toast.Root>
+    <ToastDisplay />
+    <App />
   </StrictMode>,
 )

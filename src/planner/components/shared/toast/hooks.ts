@@ -1,7 +1,6 @@
-import { useToastContext } from "./parts/ToastContext";
+import { usePlannerStore } from "@/planner/store/store";
 
-export const useToast = () => {
-    const { toast, hide, show } = useToastContext();
-    
-    return { toast, hide, show };
-}
+export const useToast = () => ({
+  show: usePlannerStore((s) => s.showToast),
+  hide: usePlannerStore((s) => s.hideToast),
+});

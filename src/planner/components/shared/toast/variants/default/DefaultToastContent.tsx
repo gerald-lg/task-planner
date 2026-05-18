@@ -1,10 +1,11 @@
-import { useToast } from "../../hooks";
 import { ToastCloseButton, ToastIcon, ToastMessage } from "../../parts";
 import { defaultToastVariantConfig } from "./config";
+import { usePlannerStore } from "@/planner/store/store";
 
 export const DefaultToastContent = () => {
-  const { toast } = useToast();
-
+  const toast = usePlannerStore((s) => s.toast);
+  const hide = usePlannerStore((s) => s.hideToast);
+  
   if (!toast) return null;
 
   const variantConfig = defaultToastVariantConfig[toast.variant];
@@ -22,10 +23,11 @@ export const DefaultToastContent = () => {
           loadIcon={variantConfig.loadIcon}
         />
 
-        <ToastMessage className={`${variantStyle.messageClassName} text-sm font-normal`} />
+        <ToastMessage className={`${variantStyle.messageClassName} text-sm font-normal`} message={toast.message} />
 
         <ToastCloseButton
           className={`${variantStyle.closeButtonClassName} -m-1 ml-auto rounded p-1 transition-colors`}
+          onClose={hide}
         />
       </div>
     </div>
